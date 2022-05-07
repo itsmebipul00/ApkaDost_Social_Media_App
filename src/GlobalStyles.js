@@ -3,33 +3,33 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyles = createGlobalStyle`
 
     :root {
-	--fs-900: 3rem;
-	--fs-800: 2rem;
-	--fs-700: 1.75rem;
-	--fs-600: 1.5rem;
-	--fs-500: 1.25rem;
-	--fs-400: 1rem;
-	--fs-300: 0.75rem;
-	--fs-200: 0.5rem;
-    
-	--white: ${({ theme }) => theme.globalTheme.theme.white};
-	--black: ${({ theme }) => theme.globalTheme.theme.black};
-	--gray: ${({ theme }) => theme.globalTheme.theme.gray};
-	--cream: ${({ theme }) => theme.globalTheme.theme.cream};
+		--fs-900: 3rem;
+		--fs-800: 2rem;
+		--fs-700: 1.75rem;
+		--fs-600: 1.5rem;
+		--fs-500: 1.25rem;
+		--fs-400: 1rem;
+		--fs-300: 0.75rem;
+		--fs-200: 0.5rem;
+		
+		--white: ${({ theme }) => theme.globalTheme.theme.white};
+		--black: ${({ theme }) => theme.globalTheme.theme.black};
+		--gray: ${({ theme }) => theme.globalTheme.theme.gray};
+		--cream: ${({ theme }) => theme.globalTheme.theme.cream};
 
-    --zIndex-1: 100;
-    --zIndex-2: 200;
-    --zIndex-3: 300;
-    --zIndex-4: 400;
-    --zIndex-5: 500;
+		--zIndex-1: 100;
+		--zIndex-2: 200;
+		--zIndex-3: 300;
+		--zIndex-4: 400;
+		--zIndex-5: 500;
 
-	--ff-mono-inconsolata: 'Inconsolata', monospace;
+		--ff-mono-inconsolata: 'Inconsolata', monospace;
 
-    --letter-spacing-1: 1px;
-    --letter-spacing-2: 1.5px;
-    --letter-spacing-3: 2px;
+		--letter-spacing-1: 1px;
+		--letter-spacing-2: 1.5px;
+		--letter-spacing-3: 2px;
 
-    --fw-300: 300;
+		--fw-300: 300;
 }
 
 
