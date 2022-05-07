@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+import { API } from '../utils/api'
+
 import axios from 'axios'
 
 const userInfo = localStorage.getItem('userInfo')
@@ -23,7 +25,7 @@ export const authUser = createAsyncThunk('/auth', async formData => {
 
 	try {
 		const res = await axios.post(
-			'/api/auth',
+			`${API}/api/auth`,
 			{ email, password },
 			config
 		)
