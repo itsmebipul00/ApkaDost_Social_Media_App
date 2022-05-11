@@ -2,7 +2,6 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 
 import {
 	ScrollToTop,
-	Header,
 	PrivateRoute,
 	ProtectedRoute,
 } from './Components'
@@ -28,7 +27,6 @@ function App() {
 				<GlobalStyles />
 
 				<ScrollToTop>
-					<Header />
 					<Routes>
 						<Route element={<ProtectedRoute />}>
 							<Route path='/auth' element={<SignInPage />} />

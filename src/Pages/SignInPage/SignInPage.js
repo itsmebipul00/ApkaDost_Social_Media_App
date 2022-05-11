@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 
 function SignInPage() {
 	const [formData, setFormData] = useState({
+		username: '',
 		email: '',
 		password: '',
 		remember: false,
@@ -26,6 +27,7 @@ function SignInPage() {
 		setFormData(prev => {
 			return {
 				...prev,
+				username: prev.email.split('@')[0],
 				[name]: type === 'checkbox' ? checked : value,
 			}
 		})
