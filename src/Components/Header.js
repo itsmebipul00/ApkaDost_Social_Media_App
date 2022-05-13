@@ -36,7 +36,6 @@ function Header() {
 	const [settedTheme, setTheme] = useLocalStorage('theme', 'light')
 
 	const toggleThemeInHeader = () => {
-		console.log('first')
 		const theme = themeType === 'dark' ? 'light' : 'dark'
 		dispatch(toggleTheme(theme))
 		setTheme(theme)
