@@ -3,17 +3,19 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import postsService from '../Services/postsServices'
 
 const initialState = {
-	posts: [],
+	allPosts: [],
 	isLoading: false,
 	error: null,
 }
 
 export const createNewPost = createAsyncThunk(
 	'posts/createPost',
-	async newPost => {
-		// console.log(newPost)
-		return postsService.createPost(newPost)
-	}
+	async newPost => await postsService.createPost(newPost)
+)
+
+export const getAllPosts = createAsyncThunk(
+	'posts/allPosts',
+	async () => await postsService.getAllPosts()
 )
 
 const postsSlice = createSlice({
@@ -21,14 +23,14 @@ const postsSlice = createSlice({
 	initialState,
 	extraReducers(builder) {
 		builder
-			.addCase(createNewPost.pending, state => {
+			.addCase(getAllPosts.pending, state => {
 				state.isLoading = true
 			})
-			.addCase(createNewPost.fulfilled, (state, action) => {
-				state.posts = action.payload
+			.addCase(getAllPosts.fulfilled, (state, action) => {
+				state.allPosts = action.payload
 				state.isLoading = false
 			})
-			.addCase(createNewPost.rejected, (state, action) => {
+			.addCase(getAllPosts.rejected, (state, action) => {
 				state.error = action.payload
 				state.isLoading = false
 			})

@@ -15,12 +15,13 @@ export const StyledNewPost = styled.section`
 				height: 100%;
 				display: flex;
 				flex-direction: column;
-				z-index: var(---zIndex-2);
+				z-index: var(--zIndex-5);
+				backdrop-filter: blur(1rem);
 				background-color: var(--dark);
 				@media (min-width: 60em) {
 					width: 60%;
 					aspect-ratio: 1;
-					inset: 10% 0% 0% 40%;
+					inset: 12% 0% 0% 31%;
 				}
 				.close-icon {
 					margin: 0 1rem 1.5rem 2rem;
@@ -34,18 +35,33 @@ export const StyledNewPost = styled.section`
 
 				.dialog-wrapper {
 					display: flex;
+					padding: 1rem;
 					& > * {
 						margin: 0.25rem;
 					}
-					.profile-pic {
-						height: 20%;
-						width: 20%;
-						border-radius: 50%;
+					.profile-pic-wrapper {
+						width: 4rem;
+						margin: 1rem 1rem 1rem 0;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						.username {
+							margin: 0.5rem;
+							font-size: var(--fs-300);
+							@media (min-width: 40em) {
+								font-size: var(--fs-400);
+							}
+						}
+						.profile-pic {
+							width: 100%;
+							aspect-ratio: 1;
+							border-radius: 50%;
+						}
 						@media (min-width: 60em) {
-							height: 20%;
-							width: 10%;
+							width: 7rem;
 						}
 					}
+
 					.textarea-wrapper {
 						width: 85%;
 						textarea {
@@ -57,9 +73,6 @@ export const StyledNewPost = styled.section`
 							font-size: var(--fs-500);
 							resize: none;
 							border: 1px solid var(--cream);
-							/* @media (min-width: 60em) {
-								height: ${p => (p.preview ? '15vw' : '30vw')};
-							} */
 						}
 						.preview-img {
 							width: 10rem;
@@ -91,9 +104,12 @@ export const StyledNewPost = styled.section`
 								height: 2rem;
 							}
 							button {
-								padding: 0.5rem 3rem;
+								padding: 0.25rem 1rem;
 								border-radius: 5px;
 								cursor: pointer;
+								@media (min-width: 60em) {
+									padding: 0.5rem 3rem;
+								}
 							}
 							& > * {
 								margin-left: 1rem;

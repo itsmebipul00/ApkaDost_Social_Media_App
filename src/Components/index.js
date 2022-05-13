@@ -5,6 +5,7 @@ export { default as Input } from './Input'
 export { default as Button } from './Button'
 export { default as Header } from './Header'
 export { default as NewPost } from './NewPost'
+export { default as AllPosts } from './AllPosts'
 
 //Styles
 export { StyledPasswordInput } from './styles/PasswordInput.styled'

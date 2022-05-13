@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 export const StyledHomePageSection = styled.section`
-	/* display: grid; */
-
 	.search-wrapper {
 		display: flex;
 		justify-content: center;
@@ -24,6 +22,22 @@ export const StyledHomePageSection = styled.section`
 			svg {
 				inset: 15% 0% 0% 93%;
 			}
+		}
+	}
+
+	@media (min-width: 60em) {
+		.all-posts {
+			position: fixed;
+			inset: 10% 15% 0% 30%;
+			overflow: scroll;
+
+			-ms-overflow-style: none; /* for Internet Explorer, Edge */
+			scrollbar-width: none; /* for Firefox */
+			overflow-y: scroll;
+		}
+
+		.all-posts::-webkit-scrollbar {
+			display: none; /* for Chrome, Safari, and Opera */
 		}
 	}
 `

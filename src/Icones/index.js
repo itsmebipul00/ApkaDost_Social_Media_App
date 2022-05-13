@@ -134,3 +134,80 @@ export function DashiconsFormatGallery(props) {
 		</svg>
 	)
 }
+
+export function MdiCardsHeartOutline(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='m12.1 18.55l-.1.1l-.11-.1C7.14 14.24 4 11.39 4 8.5C4 6.5 5.5 5 7.5 5c1.54 0 3.04 1 3.57 2.36h1.86C13.46 6 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5c0 2.89-3.14 5.74-7.9 10.05M16.5 3c-1.74 0-3.41.81-4.5 2.08C10.91 3.81 9.24 3 7.5 3C4.42 3 2 5.41 2 8.5c0 3.77 3.4 6.86 8.55 11.53L12 21.35l1.45-1.32C18.6 15.36 22 12.27 22 8.5C22 5.41 19.58 3 16.5 3Z'></path>
+		</svg>
+	)
+}
+
+export function MdiCommentMultipleOutline(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M12 23a1 1 0 0 1-1-1v-3H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4.1l-3.7 3.71c-.2.19-.45.29-.7.29H12m1-6v3.08L16.08 17H21V7H7v10h6M3 15H1V3a2 2 0 0 1 2-2h16v2H3v12Z'></path>
+		</svg>
+	)
+}
+
+export function PhShareNetwork(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 256 256' {...props}>
+			<path
+				fill='currentColor'
+				d='M176 160a39.7 39.7 0 0 0-28.6 12.1l-46.1-29.6a40.3 40.3 0 0 0 0-29l46.1-29.6A40 40 0 1 0 136 56a41 41 0 0 0 2.7 14.5l-46.1 29.6a40 40 0 1 0 0 55.8l46.1 29.6A41 41 0 0 0 136 200a40 40 0 1 0 40-40Zm0-128a24 24 0 1 1-24 24a24.1 24.1 0 0 1 24-24ZM64 152a24 24 0 1 1 24-24a24.1 24.1 0 0 1-24 24Zm112 72a24 24 0 1 1 24-24a24.1 24.1 0 0 1-24 24Z'></path>
+		</svg>
+	)
+}
+
+export function MaterialSymbolsArchiveOutline(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M5 21q-.825 0-1.413-.587Q3 19.825 3 19V6.5q0-.375.125-.675q.125-.3.325-.575l1.4-1.7q.2-.275.5-.413Q5.65 3 6 3h12q.35 0 .65.137q.3.138.5.413l1.4 1.7q.2.275.325.575q.125.3.125.675V19q0 .825-.587 1.413Q19.825 21 19 21Zm.4-15h13.2l-.85-1H6.25ZM5 19h14V8H5v11Zm7-1l4-4l-1.4-1.4l-1.6 1.6V10h-2v4.2l-1.6-1.6L8 14Zm-7 1V8v11Z'></path>
+		</svg>
+	)
+}
+
+export function CarbonBookmarkAdd(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 32 32' {...props}>
+			<path
+				fill='currentColor'
+				d='M24 16v10.752l-7.096-3.59l-.904-.457l-.9.456L8 26.748V4h10V2H8a2 2 0 0 0-2 2v26l10-5.054L26 30V16Z'></path>
+			<path
+				fill='currentColor'
+				d='M26 6V2h-2v4h-4v2h4v4h2V8h4V6h-4z'></path>
+		</svg>
+	)
+}
+
+export function IconoirTimer(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='none'
+				stroke='currentColor'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				strokeWidth='1.5'
+				d='M9 2h6m-3 8v4m0 8a8 8 0 1 0 0-16a8 8 0 0 0 0 16Z'></path>
+		</svg>
+	)
+}
+
+export function IcSharpTimeline(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M23 8c0 1.1-.9 2-2 2a1.7 1.7 0 0 1-.51-.07l-3.56 3.55c.05.16.07.34.07.52c0 1.1-.9 2-2 2s-2-.9-2-2c0-.18.02-.36.07-.52l-2.55-2.55c-.16.05-.34.07-.52.07s-.36-.02-.52-.07l-4.55 4.56c.05.16.07.33.07.51c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2c.18 0 .35.02.51.07l4.56-4.55C8.02 9.36 8 9.18 8 9c0-1.1.9-2 2-2s2 .9 2 2c0 .18-.02.36-.07.52l2.55 2.55c.16-.05.34-.07.52-.07s.36.02.52.07l3.55-3.56A1.7 1.7 0 0 1 19 8c0-1.1.9-2 2-2s2 .9 2 2zm0 0c0 1.1-.9 2-2 2a1.7 1.7 0 0 1-.51-.07l-3.56 3.55c.05.16.07.34.07.52c0 1.1-.9 2-2 2s-2-.9-2-2c0-.18.02-.36.07-.52l-2.55-2.55c-.16.05-.34.07-.52.07s-.36-.02-.52-.07l-4.55 4.56c.05.16.07.33.07.51c0 1.1-.9 2-2 2s-2-.9-2-2s.9-2 2-2c.18 0 .35.02.51.07l4.56-4.55C8.02 9.36 8 9.18 8 9c0-1.1.9-2 2-2s2 .9 2 2c0 .18-.02.36-.07.52l2.55 2.55c.16-.05.34-.07.52-.07s.36.02.52.07l3.55-3.56A1.7 1.7 0 0 1 19 8c0-1.1.9-2 2-2s2 .9 2 2z'></path>
+		</svg>
+	)
+}

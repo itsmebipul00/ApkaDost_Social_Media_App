@@ -1,11 +1,10 @@
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 
-import { createNewPost } from '../Features/postsSlice'
+import { createNewPost, getAllPosts } from '../Features/postsSlice'
 
 import {
 	MdiFeather,
 	IcBaselineClose,
-	FluentGif16Regular,
 	DashiconsFormatGallery,
 } from '../Icones'
 
@@ -19,9 +18,13 @@ function NewPost() {
 	const [modal, setModal] = useState(false)
 
 	//add img source later in backed db
-	const userImg = useSelector(state => state.auth.user.img)
+	const user = useSelector(state => state.auth.user)
 
-	const imgSrc = !!userImg ? userImg : randomImgAPI
+	const { dp, username } = user
+
+	const imgSrc = !!dp ? dp : randomImgAPI
+
+	console.log(imgSrc)
 
 	const initialState = {
 		postText: '',
@@ -33,35 +36,7 @@ function NewPost() {
 
 	const [uploadfileType, setUploadFileType] = useState('')
 
-	// const [btnDisabled, setBtnDisabled] = useState(false)
-
 	const handleSubmitPost = () => {}
-
-	// const { postGif, postImg, postText } = newPost
-
-	// console.log(postGif, postImg, postText)
-
-	// const handleDisabled = () => {
-	// 	if (postGif === '' || postImg === '' || postText === '') {
-	// 		setBtnDisabled(true)
-	// 	} else {
-	// 		setBtnDisabled(false)
-	// 	}
-	// }
-
-	// const [vidInputDisable, setVidInpDisable] = useState(false)
-	// const [gifInputDisable, setGifInpDisable] = useState(false)
-
-	// const handleVidInputDisable = () =>
-	// 	!!postGif ? setVidInpDisable(true) : setVidInpDisable(false)
-	// const handleGifInputDisable = () =>
-	// 	!!postImg ? setGifInpDisable(true) : setGifInpDisable(false)
-
-	// const handleInputDisable = () => {
-	// 	if (!!postGif) {
-	// 	}
-	// }
-	// const [previewImg, setPreviewImg] = useState('')
 
 	const dispatch = useDispatch()
 
@@ -76,22 +51,31 @@ function NewPost() {
 
 	const handleFormSubmit = e => {
 		e.preventDefault()
+
 		let newPostData = new FormData()
+
 		newPostData.append('postText', newPost.postText)
+
 		newPostData.append('postImgs', newPost.file)
 
-		dispatch(createNewPost([...newPostData]))
-
-		// console.log([...newPostData])
+		dispatch(createNewPost(newPostData))
 
 		setNewPost(initialState)
+
 		setModal(prev => !prev)
+
+		window.location.reload()
+
+		dispatch(getAllPosts())
 	}
 
 	const toggleModal = e => {
 		e.stopPropagation()
+
 		setModal(prev => !prev)
+
 		setNewPost(initialState)
+
 		setPreview(null)
 	}
 
@@ -101,6 +85,7 @@ function NewPost() {
 		setUploadFileType(fileType)
 
 		setPreview(URL.createObjectURL(e.target.files[0]))
+
 		setNewPost(prev => {
 			return {
 				...prev,
@@ -130,17 +115,22 @@ function NewPost() {
 					onClick={toggleModal}
 				/>
 				<div className='dialog-wrapper'>
-					<img
-						src={imgSrc}
-						alt='profile-pic'
-						className='profile-pic'
-					/>
+					<div className='profile-pic-wrapper'>
+						<img
+							src={imgSrc}
+							alt='profile-pic'
+							className='profile-pic'
+						/>
+						<p className='username'>{username}</p>
+					</div>
 					<form
 						className='textarea-wrapper'
 						onSubmit={handleFormSubmit}>
 						<textarea
+							placeholder='How are you doing 😋?'
 							onChange={handlePost}
 							value={newPost.postText}
+							maxLength='500'
 						/>
 						{preview &&
 							(uploadfileType.split('/')[0] === 'image' ? (
