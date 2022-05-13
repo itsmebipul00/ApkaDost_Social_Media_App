@@ -18,6 +18,15 @@ export const StyledNewPost = styled.section`
 				z-index: var(--zIndex-5);
 				backdrop-filter: blur(1rem);
 				background-color: var(--dark);
+				-ms-overflow-style: none; /* for Internet Explorer, Edge */
+			    scrollbar-width: none; /* for Firefox */
+			    overflow-y: scroll;
+				&::-webkit-scrollbar{
+					display: none;
+				}
+		}
+
+		
 				@media (min-width: 60em) {
 					width: 60%;
 					aspect-ratio: 1;
