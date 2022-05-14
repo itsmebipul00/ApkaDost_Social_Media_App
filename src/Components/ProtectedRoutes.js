@@ -7,7 +7,7 @@ function PrivateRoute() {
 
 	const location = useLocation()
 
-	if (userInfo)
+	if (!!userInfo?.token)
 		return <Navigate to='/' state={{ from: location }} replace />
 	else return <Outlet />
 }

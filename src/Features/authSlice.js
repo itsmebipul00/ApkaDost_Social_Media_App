@@ -21,12 +21,12 @@ export const authUser = createAsyncThunk('/auth', async formData => {
 			'Content-type': 'application/json',
 		},
 	}
-	const { email, password } = formData
+	const { username, email, password } = formData
 
 	try {
 		const res = await axios.post(
 			`${API}/api/auth`,
-			{ email, password },
+			{ username, email, password },
 			config
 		)
 
@@ -46,8 +46,6 @@ const authSlice = createSlice({
 				state.isLoggedIn = false
 			})
 			.addCase(authUser.fulfilled, (state, action) => {
-				console.log(action.payload)
-
 				localStorage.setItem(
 					'userInfo',
 					JSON.stringify(action.payload)

@@ -17,6 +17,7 @@ export const GlobalStyles = createGlobalStyle`
 		--gray: ${({ theme }) => theme.globalTheme.theme.gray};
 		--cream: ${({ theme }) => theme.globalTheme.theme.cream};
 
+		--z-negative: -1;
 		--zIndex-1: 100;
 		--zIndex-2: 200;
 		--zIndex-3: 300;
@@ -66,7 +67,8 @@ body {
     font-size: var(--fs-500);
     letter-spacing: var(--letter-spacing-1);
     background-color: var(--white);
-    color: var(--black)
+    color: var(--black);
+	z-index: var(--zIndex-1);
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
@@ -142,6 +144,14 @@ aside {
 	position: unset;
 	width: unset;
 }
+
+a {
+		text-decoration: none;
+	}
+	a:hover,
+	a:focus {
+		color: var(--cream);
+	}
 
 .App{
     width: 100%;
