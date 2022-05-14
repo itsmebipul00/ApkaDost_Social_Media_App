@@ -24,14 +24,15 @@ export const StyledNewPost = styled.section`
 				&::-webkit-scrollbar{
 					display: none;
 				}
-		}
-
-		
 				@media (min-width: 60em) {
 					width: 60%;
 					aspect-ratio: 1;
 					inset: 12% 0% 0% 31%;
 				}
+		}
+
+		
+				
 				.close-icon {
 					margin: 0 1rem 1.5rem 2rem;
 					background-color: var(--cream);

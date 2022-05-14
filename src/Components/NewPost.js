@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { createNewPost, getAllPosts } from '../Features/postsSlice'
 
@@ -14,8 +14,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { randomImgAPI } from '../utils/api'
 
-function NewPost() {
-	const [modal, setModal] = useState(false)
+function NewPost(props) {
+	const { modal, setModal } = props
 
 	//add img source later in backed db
 	const user = useSelector(state => state.auth.user)
@@ -64,10 +64,12 @@ function NewPost() {
 
 		setModal(prev => !prev)
 
-		window.location.reload()
-
-		dispatch(getAllPosts())
+		// dispatch(getAllPosts())
 	}
+
+	useEffect(() => {
+		dispatch(getAllPosts())
+	}, [modal, dispatch])
 
 	const toggleModal = e => {
 		e.stopPropagation()
@@ -151,7 +153,7 @@ function NewPost() {
 								<input
 									id='img-vid'
 									type='file'
-									accept='image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm'
+									accept='image/*,video/*'
 									onChange={uploadNewFile}
 									hidden
 								/>

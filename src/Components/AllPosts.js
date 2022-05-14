@@ -6,7 +6,8 @@ import { useEffect } from 'react'
 
 import { getAllPosts } from '../Features/postsSlice'
 
-import moment from 'moment'
+import formatDistance from 'date-fns/formatDistance'
+import parseISO from 'date-fns/parseISO'
 
 import {
 	MdiCardsHeartOutline,
@@ -17,17 +18,19 @@ import {
 	IcSharpTimeline,
 } from '../Icones'
 
-function AllPosts() {
+function AllPosts(props) {
 	const posts = useSelector(state => state.posts)
 
 	const { allPosts } = posts
 
 	const dispatch = useDispatch()
 
+	const { modal } = props
+
 	useEffect(() => {
 		dispatch(getAllPosts())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [modal])
 	return (
 		<div className='all-posts'>
 			{allPosts
@@ -47,7 +50,15 @@ function AllPosts() {
 								<h3 className='post-user'>{post.user.username}</h3>
 								<span className='uploaded-on'>
 									<IcSharpTimeline />
-									<span>{moment(post.updatedAt).fromNow(true)}</span>
+									<span>
+										{formatDistance(
+											parseISO(post.updatedAt),
+											Date.now(),
+											{
+												addSuffix: true,
+											}
+										)}
+									</span>
 								</span>
 							</span>
 							<p className='post-content'>{post.content.text}</p>
