@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import themeReducer from './Features/themeSlice'
 
-import authReducer from './Features/authSlice'
+import userReducer from './Features/userSlice'
 
 import postsReducer from './Features/postsSlice'
 
@@ -15,7 +15,7 @@ const store = configureStore({
 
 	reducer: {
 		theme: themeReducer,
-		auth: authReducer,
+		auth: userReducer,
 		posts: postsReducer,
 	},
 })

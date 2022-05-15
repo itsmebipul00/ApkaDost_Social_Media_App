@@ -18,6 +18,11 @@ export const getAllPosts = createAsyncThunk(
 	async () => await postsService.getAllPosts()
 )
 
+export const toggleLikes = createAsyncThunk(
+	'posts/toggleLikes',
+	async id => await postsService.toggleLikes(id)
+)
+
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
@@ -27,6 +32,7 @@ const postsSlice = createSlice({
 				state.isLoading = true
 			})
 			.addCase(getAllPosts.fulfilled, (state, action) => {
+				console.log(action.payload)
 				state.allPosts = action.payload
 				state.isLoading = false
 			})

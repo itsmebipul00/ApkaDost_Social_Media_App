@@ -9,4 +9,4 @@ export const API =
 		? `${REACT_APP_DEVELOPMENT_API}`
 		: `${REACT_APP_PRODCUTION_API}`
 
-export const randomImgAPI = 'https://picsum.photos/200'
+export const randomImgAPI = 'https://picsum.photos'

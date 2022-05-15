@@ -42,8 +42,7 @@ function Header() {
 	}
 	const [collapseNav, setCollapseNav] = useState(true)
 
-	//dont show nav on auth page
-	//show nava for small scrreens
+	const id = useSelector(state => state.auth.user._id)
 
 	return (
 		<Fragment>
@@ -62,7 +61,7 @@ function Header() {
 				</li>
 				<li>
 					<GgProfile />
-					<NavLink to='/profile'>Profile</NavLink>
+					<NavLink to={`/userProfile/${id}`}>Profile</NavLink>
 				</li>
 				<li>
 					<IcOutlineMessage />

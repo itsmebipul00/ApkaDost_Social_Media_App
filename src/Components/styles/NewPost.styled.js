@@ -30,9 +30,6 @@ export const StyledNewPost = styled.section`
 					inset: 12% 0% 0% 31%;
 				}
 		}
-
-		
-				
 				.close-icon {
 					margin: 0 1rem 1.5rem 2rem;
 					background-color: var(--cream);

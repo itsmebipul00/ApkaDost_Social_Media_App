@@ -6,8 +6,8 @@ import axios from 'axios'
 
 const postsService = {
 	createPost: async newPost => {
-		const [config, userInfo] = generateUserInfo()
-
+		const [config, userInfo] = generateUserInfo('formdata')
+		console.log(userInfo._id, API, newPost)
 		try {
 			const res = await axios.post(
 				`${API}/api/posts/${userInfo._id}`,
@@ -19,6 +19,7 @@ const postsService = {
 			throw error
 		}
 	},
+
 	//Later
 	// draftPost: async newPost => {
 	// 	const config = generateUserInfo()

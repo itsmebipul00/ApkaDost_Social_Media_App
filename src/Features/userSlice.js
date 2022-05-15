@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { API } from '../utils/api'
-
-import axios from 'axios'
+import userService from '../Services/userServices'
 
 const userInfo = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
@@ -15,28 +13,17 @@ const initialState = {
 	error: null,
 }
 
-export const authUser = createAsyncThunk('/auth', async formData => {
-	const config = {
-		headers: {
-			'Content-type': 'application/json',
-		},
-	}
-	const { username, email, password } = formData
+export const authUser = createAsyncThunk(
+	'user/auth',
+	async formData => await userService.authUser(formData)
+)
 
-	try {
-		const res = await axios.post(
-			`${API}/api/auth`,
-			{ username, email, password },
-			config
-		)
+export const likePost = createAsyncThunk(
+	'user/likes',
+	async postId => await userService.likePost(postId)
+)
 
-		return res.data
-	} catch (error) {
-		throw error
-	}
-})
-
-const authSlice = createSlice({
+const userSlice = createSlice({
 	name: 'auth',
 	initialState,
 	extraReducers(builder) {
@@ -46,6 +33,7 @@ const authSlice = createSlice({
 				state.isLoggedIn = false
 			})
 			.addCase(authUser.fulfilled, (state, action) => {
+				console.log(action.payload)
 				localStorage.setItem(
 					'userInfo',
 					JSON.stringify(action.payload)
@@ -63,4 +51,4 @@ const authSlice = createSlice({
 	},
 })
 
-export default authSlice.reducer
+export default userSlice.reducer
