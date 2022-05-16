@@ -7,6 +7,7 @@ const initialState = {
 	isLoading: false,
 	error: null,
 	userPosts: [],
+	userFeed: [],
 }
 
 export const createNewPost = createAsyncThunk(
@@ -27,6 +28,11 @@ export const toggleLikes = createAsyncThunk(
 export const getUsersPosts = createAsyncThunk(
 	'posts/user',
 	async id => await postsService.getUserPosts(id)
+)
+
+export const getUserFeed = createAsyncThunk(
+	'posts/userFeed',
+	async id => await postsService.getUserFeed(id)
 )
 
 const postsSlice = createSlice({
@@ -54,6 +60,17 @@ const postsSlice = createSlice({
 				state.isLoading = false
 			})
 			.addCase(getUsersPosts.rejected, (state, action) => {
+				state.error = action.payload
+				state.isLoading = false
+			})
+			.addCase(getUserFeed.pending, state => {
+				state.isLoading = true
+			})
+			.addCase(getUserFeed.fulfilled, (state, action) => {
+				state.userFeed = action.payload
+				state.isLoading = false
+			})
+			.addCase(getUserFeed.rejected, (state, action) => {
 				state.error = action.payload
 				state.isLoading = false
 			})
