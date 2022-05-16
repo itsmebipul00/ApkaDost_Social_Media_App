@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { Fragment, useEffect } from 'react'
 
-import { getAllPosts } from '../Features/postsSlice'
+import { getAllPosts, toggleLikes } from '../Features/postsSlice'
 
 import { Posts } from '../Components'
 
@@ -17,6 +17,11 @@ function AllPosts() {
 
 	const dispatch = useDispatch()
 
+	const handleLikes = id => {
+		dispatch(toggleLikes(id))
+		dispatch(getAllPosts())
+	}
+
 	useEffect(() => {
 		dispatch(getAllPosts())
 	}, [modal, dispatch])
@@ -27,7 +32,7 @@ function AllPosts() {
 				.slice(0)
 				.reverse()
 				.map((post, idx) => (
-					<Posts key={idx} post={post} />
+					<Posts key={idx} post={post} handleLikes={handleLikes} />
 				))}
 		</Fragment>
 	)

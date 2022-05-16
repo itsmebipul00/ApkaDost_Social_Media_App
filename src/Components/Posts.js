@@ -2,10 +2,6 @@ import { useDispatch } from 'react-redux'
 
 import { useNavigate } from 'react-router-dom'
 
-import formatDistance from 'date-fns/formatDistance'
-
-import parseISO from 'date-fns/parseISO'
-
 import {
 	MdiCardsHeartOutline,
 	MdiCommentMultipleOutline,
@@ -14,18 +10,13 @@ import {
 	CarbonBookmarkAdd,
 } from '../Icones'
 
-import { likePost } from '../Features/userSlice'
+// import { likePost } from '../Features/userSlice'
 
 import { StyledPost } from '../Components'
 
 const Posts = props => {
-	const { post } = props
+	const { post, handleLikes } = props
 
-	const dispatch = useDispatch()
-
-	const toggleLikes = id => {
-		dispatch(likePost(id))
-	}
 	const navigate = useNavigate()
 
 	const handleUser = id => {
@@ -61,7 +52,7 @@ const Posts = props => {
 				<p className='post-content'>{post?.content?.text}</p>
 				<span className='cta-btns'>
 					<MdiCardsHeartOutline
-						onClick={() => toggleLikes(post?._id)}
+						onClick={() => handleLikes(post?._id)}
 					/>
 					<MdiCommentMultipleOutline />
 					<PhShareNetwork />

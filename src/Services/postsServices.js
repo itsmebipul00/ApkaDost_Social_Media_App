@@ -43,6 +43,18 @@ const postsService = {
 			throw error
 		}
 	},
+	toggleLikes: async id => {
+		const [config, userInfo] = generateUserInfo()
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/toggleLikes/${id}/${userInfo._id}`,
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 
 	//Later
 	// draftPost: async newPost => {

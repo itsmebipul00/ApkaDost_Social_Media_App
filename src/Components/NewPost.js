@@ -24,7 +24,9 @@ function NewPost() {
 
 	const { dp, username } = user
 
-	const imgSrc = !!dp ? dp : randomImgAPI
+	const imgSrc = !!dp
+		? `${window.location.origin}/${dp}`
+		: randomImgAPI
 
 	const initialState = {
 		postText: '',
