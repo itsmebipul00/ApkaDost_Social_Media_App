@@ -36,6 +36,19 @@ const userService = {
 			throw error
 		}
 	},
+	getUserInfo: async id => {
+		// const { username, email, password } = formData
+		console.log(id)
+		const [config] = generateUserInfo()
+
+		try {
+			const res = await axios.get(`${API}/api/users/${id}`, config)
+
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 }
 
 export default userService

@@ -1,14 +1,15 @@
 import { useLocation } from 'react-router-dom'
 import { generateUserInfo } from '../../utils/generateUserInfo'
 import { API } from '../../utils/api'
-import { useAxios } from '../../Hooks'
-import formatDistance from 'date-fns/formatDistance'
-import parseISO from 'date-fns/parseISO'
 import { randomImgAPI } from '../../utils/api'
 import { StyledProfileSection } from './styles/ProfileSection.styled.js'
 import { IcOutlineModeEdit } from '../../Icones'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Posts } from '../../Components'
+import axios from 'axios'
+import { useEffect } from 'react'
+import { getUsersPosts } from '../../Features/postsSlice'
+import { getUserInfo } from '../../Features/userSlice'
 function ProfilePage() {
 	const location = useLocation()
 
@@ -18,27 +19,30 @@ function ProfilePage() {
 
 	const [config] = generateUserInfo()
 
-	const { headers } = config
-
-	const [userInfo] = useAxios({
-		method: 'get',
-		url: `${API}/api/users/${id}`,
-		headers,
-	})
-
-	const [userPosts] = useAxios({
-		method: 'get',
-		url: `${API}/api/posts/user/${userInfo?._id}`,
-		headers,
-	})
-
 	const userId = useSelector(state => state.auth.user._id)
 
-	const handleFollow = id => {
-		console.log(id)
+	const userPosts = useSelector(state => state.posts.userPosts)
+
+	const userInfo = useSelector(state => state.auth.userDetails)
+
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		// eslint-disable-next-line no-undef
+		dispatch(getUserInfo(id))
+		dispatch(getUsersPosts(userInfo?._id))
+	}, [userInfo?._id, dispatch, id])
+
+	const handleFollow = async id => {
+		await axios.put(
+			`${API}/api/users/follow/${userId}`,
+			{ id },
+			config
+		)
+		dispatch(getUserInfo(id))
 	}
 
-	console.log(userPosts)
+	const isFollowed = userInfo?.follower?.find(id => id === userId)
 
 	return (
 		<StyledProfileSection>
@@ -84,7 +88,7 @@ function ProfilePage() {
 						</button>
 					) : (
 						<button onClick={() => handleFollow(userInfo?._id)}>
-							Follow
+							{isFollowed ? 'Unfollow' : 'Follow'}
 						</button>
 					)}
 				</div>

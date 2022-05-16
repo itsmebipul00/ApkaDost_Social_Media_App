@@ -19,6 +19,18 @@ const postsService = {
 			throw error
 		}
 	},
+	getUserPosts: async id => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(
+				`${API}/api/posts/user/${id}`,
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 
 	//Later
 	// draftPost: async newPost => {

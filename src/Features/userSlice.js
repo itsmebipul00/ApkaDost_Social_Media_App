@@ -11,6 +11,7 @@ const initialState = {
 	user: userInfo,
 	isLoading: false,
 	error: null,
+	userDetails: null,
 }
 
 export const authUser = createAsyncThunk(
@@ -21,6 +22,11 @@ export const authUser = createAsyncThunk(
 export const likePost = createAsyncThunk(
 	'user/likes',
 	async postId => await userService.likePost(postId)
+)
+
+export const getUserInfo = createAsyncThunk(
+	'user/userDetails',
+	async id => await userService.getUserInfo(id)
 )
 
 const userSlice = createSlice({
@@ -47,6 +53,17 @@ const userSlice = createSlice({
 				state.error = action.payload
 				state.isLoading = false
 				state.isLoggedIn = false
+			})
+			.addCase(getUserInfo.pending, state => {
+				state.isLoading = true
+			})
+			.addCase(getUserInfo.fulfilled, (state, action) => {
+				state.userDetails = action.payload
+				state.isLoading = false
+			})
+			.addCase(getUserInfo.rejected, (state, action) => {
+				state.error = action.payload
+				state.isLoading = false
 			})
 	},
 })
