@@ -2,7 +2,11 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { Fragment, useEffect } from 'react'
 
-import { getAllPosts, toggleLikes } from '../Features/postsSlice'
+import {
+	getAllPosts,
+	likePost,
+	unlikePost,
+} from '../Features/postsSlice'
 
 import { Posts } from '../Components'
 
@@ -11,20 +15,28 @@ import { useModal } from '../Providers/ModalProvider'
 function AllPosts() {
 	const posts = useSelector(state => state.posts)
 
-	const { allPosts } = posts
+	const userId = useSelector(state => state.auth.user._id)
+
+	const { allPosts, isLiked, isUnliked } = posts
 
 	const { modal } = useModal()
 
 	const dispatch = useDispatch()
 
-	const handleLikes = id => {
-		dispatch(toggleLikes(id))
-		dispatch(getAllPosts())
-	}
-
 	useEffect(() => {
 		dispatch(getAllPosts())
-	}, [modal, dispatch])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [modal, dispatch, isLiked, isUnliked])
+
+	const handleLikes = id => {
+		const post = allPosts.find(post => post._id === id)
+		const isLiked = post.likes.find(_id => _id === userId)
+		if (!isLiked) {
+			dispatch(likePost(id))
+		} else {
+			dispatch(unlikePost(id))
+		}
+	}
 
 	return (
 		<Fragment>

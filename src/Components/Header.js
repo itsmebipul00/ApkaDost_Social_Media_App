@@ -27,7 +27,6 @@ import { StyledNavigation } from './styles/PrimaryNavigation.styled'
 import { StyledInputSearch } from './styles/InputSearch.styled'
 
 function Header() {
-	// const { setCollapseNav } = props
 	const dispatch = useDispatch()
 
 	const themeType = useSelector(state => state.theme.themeType)

@@ -22,8 +22,15 @@ export const StyledPost = styled.section`
 			width: 100%;
 			display: flex;
 			justify-content: space-between;
-			& > * {
+			.heart {
+				display: flex;
+				align-items: center;
+			}
+			svg {
 				cursor: pointer;
+				width: 1.5rem;
+				height: 1.5rem;
+				margin-right: 0.5rem;
 			}
 		}
 		.postedBy-info {

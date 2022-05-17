@@ -65,8 +65,6 @@ function NewPost() {
 		setNewPost(initialState)
 
 		setModal(prev => !prev)
-
-		// dispatch(getAllPosts())
 	}
 
 	useEffect(() => {

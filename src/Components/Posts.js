@@ -1,5 +1,3 @@
-import { useDispatch } from 'react-redux'
-
 import { useNavigate } from 'react-router-dom'
 
 import {
@@ -9,8 +7,6 @@ import {
 	MaterialSymbolsArchiveOutline,
 	CarbonBookmarkAdd,
 } from '../Icones'
-
-// import { likePost } from '../Features/userSlice'
 
 import { StyledPost } from '../Components'
 
@@ -23,7 +19,6 @@ const Posts = props => {
 		navigate(`/userProfile/${id}`)
 	}
 
-	console.log(post)
 	return (
 		<StyledPost>
 			<div className='dp-wrapper'>
@@ -40,6 +35,7 @@ const Posts = props => {
 						className='post-user'>
 						<p>{post?.user?.username}</p>
 					</button>
+					{/* Future reference */}
 					{/* <span className='uploaded-on'>
 						<IcSharpTimeline />
 						<span>
@@ -51,9 +47,16 @@ const Posts = props => {
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
 				<span className='cta-btns'>
-					<MdiCardsHeartOutline
-						onClick={() => handleLikes(post?._id)}
-					/>
+					<span className='heart'>
+						<MdiCardsHeartOutline
+							onClick={() => handleLikes(post?._id)}
+						/>
+						{post?.likes?.length > 0 &&
+							(post?.likes?.length === 1
+								? `${post?.likes?.length} like`
+								: `${post?.likes?.length} likes`)}
+					</span>
+
 					<MdiCommentMultipleOutline />
 					<PhShareNetwork />
 					<MaterialSymbolsArchiveOutline />

@@ -5,20 +5,6 @@ import { generateUserInfo } from '../utils/generateUserInfo'
 import axios from 'axios'
 
 const userService = {
-	likePost: async postId => {
-		const [config, userInfo] = generateUserInfo('json')
-
-		try {
-			const res = await axios.post(
-				`${API}/api/users/${postId}/${userInfo._id}`,
-				{},
-				config
-			)
-			return res.data
-		} catch (error) {
-			throw error
-		}
-	},
 	authUser: async formData => {
 		const { username, email, password } = formData
 
@@ -37,8 +23,6 @@ const userService = {
 		}
 	},
 	getUserInfo: async id => {
-		// const { username, email, password } = formData
-		console.log(id)
 		const [config] = generateUserInfo()
 
 		try {

@@ -10,11 +10,15 @@ import axios from 'axios'
 import { useEffect } from 'react'
 import { getUsersPosts } from '../../Features/postsSlice'
 import { getUserInfo } from '../../Features/userSlice'
+import { likePost, unlikePost } from '../../Features/postsSlice'
+
 function ProfilePage() {
 	const location = useLocation()
+	const isLiked = useSelector(state => state?.posts?.isLiked)
+
+	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	// console.log(window.location.origin + location.pathname) //Future, use for url
-
 	const id = location.pathname.split('/')[2]
 
 	const [config] = generateUserInfo()
@@ -31,7 +35,7 @@ function ProfilePage() {
 		// eslint-disable-next-line no-undef
 		dispatch(getUserInfo(id))
 		dispatch(getUsersPosts(userInfo?._id))
-	}, [userInfo?._id, dispatch, id])
+	}, [userInfo?._id, dispatch, id, isLiked, isUnliked])
 
 	const handleFollow = async id => {
 		await axios.put(
@@ -43,6 +47,17 @@ function ProfilePage() {
 	}
 
 	const isFollowed = userInfo?.follower?.find(id => id === userId)
+
+	const handleLikes = id => {
+		const post = userPosts.find(post => post._id === id)
+		const isLiked = post.likes.find(_id => _id === userId)
+
+		if (!isLiked) {
+			dispatch(likePost(id))
+		} else {
+			dispatch(unlikePost(id))
+		}
+	}
 
 	return (
 		<StyledProfileSection>
@@ -95,7 +110,7 @@ function ProfilePage() {
 			</div>
 			<div className='userPosts'>
 				{userPosts?.map((post, idx) => (
-					<Posts key={idx} post={post} />
+					<Posts key={idx} post={post} handleLikes={handleLikes} />
 				))}
 			</div>
 		</StyledProfileSection>

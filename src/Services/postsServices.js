@@ -7,7 +7,6 @@ import axios from 'axios'
 const postsService = {
 	createPost: async newPost => {
 		const [config, userInfo] = generateUserInfo('formdata')
-		console.log(userInfo._id, API, newPost)
 		try {
 			const res = await axios.post(
 				`${API}/api/posts/${userInfo._id}`,
@@ -43,11 +42,25 @@ const postsService = {
 			throw error
 		}
 	},
-	toggleLikes: async id => {
+	likePost: async id => {
 		const [config, userInfo] = generateUserInfo()
 		try {
 			const res = await axios.put(
-				`${API}/api/posts/toggleLikes/${id}/${userInfo._id}`,
+				`${API}/api/posts/like/${id}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+	unlikePost: async id => {
+		const [config, userInfo] = generateUserInfo()
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/unlike/${id}/${userInfo._id}`,
+				{},
 				config
 			)
 			return res.data

@@ -20,9 +20,14 @@ export const getAllPosts = createAsyncThunk(
 	async () => await postsService.getAllPosts()
 )
 
-export const toggleLikes = createAsyncThunk(
-	'posts/toggleLikes',
-	async id => await postsService.toggleLikes(id)
+export const likePost = createAsyncThunk(
+	'posts/likePost',
+	async id => await postsService.likePost(id)
+)
+
+export const unlikePost = createAsyncThunk(
+	'posts/unlikePost',
+	async id => await postsService.unlikePost(id)
 )
 
 export const getUsersPosts = createAsyncThunk(
@@ -44,7 +49,6 @@ const postsSlice = createSlice({
 				state.isLoading = true
 			})
 			.addCase(getAllPosts.fulfilled, (state, action) => {
-				console.log(action.payload)
 				state.allPosts = action.payload
 				state.isLoading = false
 			})
@@ -72,6 +76,30 @@ const postsSlice = createSlice({
 			})
 			.addCase(getUserFeed.rejected, (state, action) => {
 				state.error = action.payload
+				state.isLoading = false
+			})
+			.addCase(likePost.pending, state => {
+				state.isLiked = false
+				state.isLoading = false
+			})
+			.addCase(likePost.fulfilled, state => {
+				state.isLiked = true
+				state.isLoading = false
+			})
+			.addCase(likePost.rejected, state => {
+				state.isLiked = false
+				state.isLoading = false
+			})
+			.addCase(unlikePost.pending, state => {
+				state.isUnliked = false
+				state.isLoading = false
+			})
+			.addCase(unlikePost.fulfilled, state => {
+				state.isUnliked = true
+				state.isLoading = false
+			})
+			.addCase(unlikePost.rejected, state => {
+				state.isUnliked = false
 				state.isLoading = false
 			})
 	},

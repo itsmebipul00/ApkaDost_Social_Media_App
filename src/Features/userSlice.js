@@ -39,7 +39,6 @@ const userSlice = createSlice({
 				state.isLoggedIn = false
 			})
 			.addCase(authUser.fulfilled, (state, action) => {
-				console.log(action.payload)
 				localStorage.setItem(
 					'userInfo',
 					JSON.stringify(action.payload)
