@@ -6,10 +6,6 @@ export const StyledPost = styled.section`
 	@media (min-width: 40em) {
 		padding: 3rem;
 	}
-
-	.dp-wrapper {
-		width: 4rem;
-	}
 	.post-details {
 		display: grid;
 		gap: 1.5rem;
@@ -57,7 +53,7 @@ export const StyledPost = styled.section`
 	}
 
 	.profile-dp {
-		width: 100%;
+		width: 5rem;
 		aspect-ratio: 1;
 		border-radius: 50%;
 	}

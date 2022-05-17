@@ -11,6 +11,7 @@ import {
 	ExplorePage,
 	HomePage,
 	ProfilePage,
+	PostPage,
 } from './Pages'
 
 import { ThemeProvider } from 'styled-components'
@@ -43,6 +44,7 @@ function App() {
 							/>
 							<Route path='/' element={<HomePage />} />
 							<Route path='/explore' element={<ExplorePage />} />
+							<Route path='/post/:id' element={<PostPage />} />
 						</Route>
 					</Routes>
 				</ScrollToTop>

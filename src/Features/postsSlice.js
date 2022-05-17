@@ -8,6 +8,7 @@ const initialState = {
 	error: null,
 	userPosts: [],
 	userFeed: [],
+	post: [],
 }
 
 export const createNewPost = createAsyncThunk(
@@ -38,6 +39,11 @@ export const getUsersPosts = createAsyncThunk(
 export const getUserFeed = createAsyncThunk(
 	'posts/userFeed',
 	async id => await postsService.getUserFeed(id)
+)
+
+export const getPost = createAsyncThunk(
+	'posts/postId',
+	async id => await postsService.getPost(id)
 )
 
 const postsSlice = createSlice({
@@ -100,6 +106,10 @@ const postsSlice = createSlice({
 			})
 			.addCase(unlikePost.rejected, state => {
 				state.isUnliked = false
+				state.isLoading = false
+			})
+			.addCase(getPost.fulfilled, (state, action) => {
+				state.post = action.payload
 				state.isLoading = false
 			})
 	},

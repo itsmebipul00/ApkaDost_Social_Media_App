@@ -15,7 +15,8 @@ const Posts = props => {
 
 	const navigate = useNavigate()
 
-	const handleUser = id => {
+	const handleUser = (e, id) => {
+		e.stopPropagation()
 		navigate(`/userProfile/${id}`)
 	}
 
@@ -28,10 +29,12 @@ const Posts = props => {
 					className='profile-dp'
 				/>
 			</div>
-			<div className='post-details'>
+			<div
+				className='post-details'
+				onClick={() => navigate(`/post/${post?._id}`)}>
 				<span className='postedBy-info'>
 					<button
-						onClick={() => handleUser(post?.user?._id)}
+						onClick={e => handleUser(e, post?.user?._id)}
 						className='post-user'>
 						<p>{post?.user?.username}</p>
 					</button>
@@ -46,7 +49,7 @@ const Posts = props => {
 					</span> */}
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
-				<span className='cta-btns'>
+				<span className='cta-btns' onClick={e => e.stopPropagation()}>
 					<span className='heart'>
 						<MdiCardsHeartOutline
 							onClick={() => handleLikes(post?._id)}
@@ -57,7 +60,9 @@ const Posts = props => {
 								: `${post?.likes?.length} likes`)}
 					</span>
 
-					<MdiCommentMultipleOutline />
+					<MdiCommentMultipleOutline
+						onClick={() => navigate(`/post/${post?._id}`)}
+					/>
 					<PhShareNetwork />
 					<MaterialSymbolsArchiveOutline />
 					<CarbonBookmarkAdd />

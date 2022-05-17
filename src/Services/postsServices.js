@@ -94,6 +94,15 @@ const postsService = {
 			throw error
 		}
 	},
+	getPost: async id => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(`${API}/api/posts/${id}`, config)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 }
 
 export default postsService
