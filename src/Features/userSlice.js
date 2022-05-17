@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { API } from '../utils/api'
-
-import axios from 'axios'
+import userService from '../Services/userServices'
 
 const userInfo = localStorage.getItem('userInfo')
 	? JSON.parse(localStorage.getItem('userInfo'))
@@ -13,30 +11,25 @@ const initialState = {
 	user: userInfo,
 	isLoading: false,
 	error: null,
+	userDetails: null,
 }
 
-export const authUser = createAsyncThunk('/auth', async formData => {
-	const config = {
-		headers: {
-			'Content-type': 'application/json',
-		},
-	}
-	const { username, email, password } = formData
+export const authUser = createAsyncThunk(
+	'user/auth',
+	async formData => await userService.authUser(formData)
+)
 
-	try {
-		const res = await axios.post(
-			`${API}/api/auth`,
-			{ username, email, password },
-			config
-		)
+export const likePost = createAsyncThunk(
+	'user/likes',
+	async postId => await userService.likePost(postId)
+)
 
-		return res.data
-	} catch (error) {
-		throw error
-	}
-})
+export const getUserInfo = createAsyncThunk(
+	'user/userDetails',
+	async id => await userService.getUserInfo(id)
+)
 
-const authSlice = createSlice({
+const userSlice = createSlice({
 	name: 'auth',
 	initialState,
 	extraReducers(builder) {
@@ -60,7 +53,18 @@ const authSlice = createSlice({
 				state.isLoading = false
 				state.isLoggedIn = false
 			})
+			.addCase(getUserInfo.pending, state => {
+				state.isLoading = true
+			})
+			.addCase(getUserInfo.fulfilled, (state, action) => {
+				state.userDetails = action.payload
+				state.isLoading = false
+			})
+			.addCase(getUserInfo.rejected, (state, action) => {
+				state.error = action.payload
+				state.isLoading = false
+			})
 	},
 })
 
-export default authSlice.reducer
+export default userSlice.reducer

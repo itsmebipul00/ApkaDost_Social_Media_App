@@ -8,7 +8,7 @@ import { StyledPasswordInput } from '../../Components'
 
 import { Link } from 'react-router-dom'
 
-import { authUser } from '../../Features/authSlice'
+import { authUser } from '../../Features/userSlice'
 import { useDispatch } from 'react-redux'
 
 function SignInPage() {

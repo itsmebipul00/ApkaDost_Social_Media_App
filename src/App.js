@@ -6,7 +6,12 @@ import {
 	ProtectedRoute,
 } from './Components'
 
-import { SignInPage, HomePage } from './Pages'
+import {
+	SignInPage,
+	ExplorePage,
+	HomePage,
+	ProfilePage,
+} from './Pages'
 
 import { ThemeProvider } from 'styled-components'
 
@@ -32,7 +37,12 @@ function App() {
 							<Route path='/auth' element={<SignInPage />} />
 						</Route>
 						<Route element={<PrivateRoute />}>
+							<Route
+								path={`/userProfile/:id`}
+								element={<ProfilePage />}
+							/>
 							<Route path='/' element={<HomePage />} />
+							<Route path='/explore' element={<ExplorePage />} />
 						</Route>
 					</Routes>
 				</ScrollToTop>

@@ -14,17 +14,19 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { randomImgAPI } from '../utils/api'
 
-function NewPost(props) {
-	const { modal, setModal } = props
+import { useModal } from '../Providers/ModalProvider'
 
+function NewPost() {
 	//add img source later in backed db
 	const user = useSelector(state => state.auth.user)
 
+	const { modal, setModal } = useModal()
+
 	const { dp, username } = user
 
-	const imgSrc = !!dp ? dp : randomImgAPI
-
-	console.log(imgSrc)
+	const imgSrc = !!dp
+		? `${window.location.origin}/${dp}`
+		: randomImgAPI
 
 	const initialState = {
 		postText: '',
@@ -63,8 +65,6 @@ function NewPost(props) {
 		setNewPost(initialState)
 
 		setModal(prev => !prev)
-
-		// dispatch(getAllPosts())
 	}
 
 	useEffect(() => {
@@ -100,8 +100,6 @@ function NewPost(props) {
 		//Save to drafts do later
 		toggleModal(e)
 	}
-
-	console.log(preview)
 
 	return (
 		<StyledNewPost modalShown={modal} preview={preview}>

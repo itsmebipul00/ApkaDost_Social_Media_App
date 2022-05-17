@@ -6,8 +6,7 @@ import axios from 'axios'
 
 const postsService = {
 	createPost: async newPost => {
-		const [config, userInfo] = generateUserInfo()
-
+		const [config, userInfo] = generateUserInfo('formdata')
 		try {
 			const res = await axios.post(
 				`${API}/api/posts/${userInfo._id}`,
@@ -19,6 +18,57 @@ const postsService = {
 			throw error
 		}
 	},
+	getUserPosts: async id => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(
+				`${API}/api/posts/user/${id}`,
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+	getUserFeed: async id => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(
+				`${API}/api/posts/userFeed/${id}`,
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+	likePost: async id => {
+		const [config, userInfo] = generateUserInfo()
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/like/${id}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+	unlikePost: async id => {
+		const [config, userInfo] = generateUserInfo()
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/unlike/${id}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+
 	//Later
 	// draftPost: async newPost => {
 	// 	const config = generateUserInfo()

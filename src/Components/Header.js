@@ -27,7 +27,6 @@ import { StyledNavigation } from './styles/PrimaryNavigation.styled'
 import { StyledInputSearch } from './styles/InputSearch.styled'
 
 function Header() {
-	// const { setCollapseNav } = props
 	const dispatch = useDispatch()
 
 	const themeType = useSelector(state => state.theme.themeType)
@@ -42,8 +41,7 @@ function Header() {
 	}
 	const [collapseNav, setCollapseNav] = useState(true)
 
-	//dont show nav on auth page
-	//show nava for small scrreens
+	const id = useSelector(state => state.auth.user._id)
 
 	return (
 		<Fragment>
@@ -62,7 +60,7 @@ function Header() {
 				</li>
 				<li>
 					<GgProfile />
-					<NavLink to='/profile'>Profile</NavLink>
+					<NavLink to={`/userProfile/${id}`}>Profile</NavLink>
 				</li>
 				<li>
 					<IcOutlineMessage />
