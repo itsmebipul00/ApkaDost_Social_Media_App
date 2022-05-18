@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import { createNewPost, getAllPosts } from '../Features/postsSlice'
+import {
+	createNewPost,
+	getAllPosts,
+	getUsersPosts,
+} from '../Features/postsSlice'
 
 import {
 	MdiFeather,
@@ -15,28 +19,44 @@ import { useSelector, useDispatch } from 'react-redux'
 import { randomImgAPI } from '../utils/api'
 
 import { useModal } from '../Providers/ModalProvider'
+import { useParams } from 'react-router-dom'
+import { generateUserInfo } from '../utils/generateUserInfo'
+
+import { API } from '../utils/api'
+
+import axios from 'axios'
 
 function NewPost() {
 	//add img source later in backed db
+	// const location = useLocation()
+	const { id } = useParams()
+
 	const user = useSelector(state => state.auth.user)
 
-	const { modal, setModal } = useModal()
+	const [config, userInfo] = generateUserInfo('formdata')
+
+	// console.log(userInfo)
+
+	const {
+		modal,
+		setModal,
+		initialState,
+		newPost,
+		setNewPost,
+		setUploadFileType,
+		uploadfileType,
+		preview,
+		setPreview,
+		isItAnEdit,
+		postId,
+		setIsItAnEdit,
+	} = useModal()
 
 	const { dp, username } = user
 
 	const imgSrc = !!dp
 		? `${window.location.origin}/${dp}`
 		: randomImgAPI
-
-	const initialState = {
-		postText: '',
-		file: null,
-	}
-	const [newPost, setNewPost] = useState(initialState)
-
-	const [preview, setPreview] = useState(null)
-
-	const [uploadfileType, setUploadFileType] = useState('')
 
 	const handleSubmitPost = () => {}
 
@@ -64,21 +84,27 @@ function NewPost() {
 
 		setNewPost(initialState)
 
-		setModal(prev => !prev)
+		setModal(false)
 	}
 
 	useEffect(() => {
 		dispatch(getAllPosts())
-	}, [modal, dispatch])
+		dispatch(getUsersPosts(userInfo._id))
+	}, [modal, dispatch, userInfo._id])
 
-	const toggleModal = e => {
+	const openModal = e => {
 		e.stopPropagation()
 
-		setModal(prev => !prev)
+		setModal(true)
 
 		setNewPost(initialState)
 
 		setPreview(null)
+	}
+
+	const saveToDrafts = () => {
+		//Save to drafts do later
+		setModal(false)
 	}
 
 	const uploadNewFile = e => {
@@ -96,15 +122,24 @@ function NewPost() {
 		})
 	}
 
-	const handleClose = e => {
-		//Save to drafts do later
-		toggleModal(e)
+	const handleUpdatePost = async e => {
+		e.preventDefault()
+
+		setModal(false)
+
+		setIsItAnEdit(false)
+
+		let newPostData = new FormData()
+
+		newPostData.append('postText', newPost.postText)
+
+		await axios.put(`${API}/api/posts/${postId}`, newPost, config)
 	}
 
 	return (
 		<StyledNewPost modalShown={modal} preview={preview}>
 			{!modal && (
-				<button className='chrip-btn' onClick={handleClose}>
+				<button className='chrip-btn' onClick={openModal}>
 					<MdiFeather />
 				</button>
 			)}
@@ -112,7 +147,7 @@ function NewPost() {
 			<section className='new-post-dialog'>
 				<IcBaselineClose
 					className='close-icon'
-					onClick={toggleModal}
+					onClick={saveToDrafts}
 				/>
 				<div className='dialog-wrapper'>
 					<div className='profile-pic-wrapper'>
@@ -168,8 +203,11 @@ function NewPost() {
 								/>
 								<FluentGif16Regular />
 							</label> */}
-							{}
-							<button onClick={handleSubmitPost}>Chirp</button>
+							{id === userInfo._id && isItAnEdit ? (
+								<button onClick={handleUpdatePost}>Update</button>
+							) : (
+								<button onClick={handleSubmitPost}>Chirp</button>
+							)}
 						</div>
 					</form>
 				</div>

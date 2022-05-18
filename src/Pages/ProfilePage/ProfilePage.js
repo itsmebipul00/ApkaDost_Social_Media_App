@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../../utils/generateUserInfo'
 import { API } from '../../utils/api'
 import { randomImgAPI } from '../../utils/api'
@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import { getUsersPosts } from '../../Features/postsSlice'
 import { getUserInfo } from '../../Features/userSlice'
 import { likePost, unlikePost } from '../../Features/postsSlice'
+import { useModal } from '../../Providers/ModalProvider'
 
 function ProfilePage() {
 	const location = useLocation()
@@ -19,23 +20,29 @@ function ProfilePage() {
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	// console.log(window.location.origin + location.pathname) //Future, use for url
-	const id = location.pathname.split('/')[2]
+	// const id = location.pathname.split('/')[2]
+
+	const { id } = useParams()
 
 	const [config] = generateUserInfo()
 
-	const userId = useSelector(state => state.auth.user._id)
+	const userId = useSelector(state => state?.auth?.user?._id)
 
-	const userPosts = useSelector(state => state.posts.userPosts)
+	const userPosts = useSelector(state => state?.posts?.userPosts)
 
-	const userInfo = useSelector(state => state.auth.userDetails)
+	const userInfo = useSelector(state => state?.auth?.userDetails)
 
 	const dispatch = useDispatch()
 
+	const { modal } = useModal()
+
 	useEffect(() => {
-		// eslint-disable-next-line no-undef
 		dispatch(getUserInfo(id))
-		dispatch(getUsersPosts(userInfo?._id))
-	}, [userInfo?._id, dispatch, id, isLiked, isUnliked])
+		if (userInfo?._id) {
+			dispatch(getUsersPosts(userInfo?._id))
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [userInfo?._id, id, isLiked, isUnliked, modal])
 
 	const handleFollow = async id => {
 		await axios.put(
@@ -44,6 +51,12 @@ function ProfilePage() {
 			config
 		)
 		dispatch(getUserInfo(id))
+	}
+
+	const handleDeletePost = async id => {
+		await axios.delete(`${API}/api/posts/delete/${id}`, config)
+
+		dispatch(getUsersPosts(userInfo?._id))
 	}
 
 	const isFollowed = userInfo?.follower?.find(id => id === userId)
@@ -123,6 +136,7 @@ function ProfilePage() {
 						post={post}
 						handleLikes={handleLikes}
 						isUserProfile={true}
+						handleDeletePost={handleDeletePost}
 					/>
 				))}
 			</div>

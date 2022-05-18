@@ -13,28 +13,41 @@ import { StyledPost } from '../Components'
 import { useNavigate, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../utils/generateUserInfo'
 
+import { useModal } from '../Providers/ModalProvider'
+
 import { Fragment } from 'react'
 
 const Posts = props => {
-	const { post, handleLikes, isPostPage } = props
+	const { post, handleLikes, isPostPage, handleDeletePost } = props
 
 	const navigate = useNavigate()
 
 	const { id } = useParams()
+
+	const { setModal, setNewPost, setIsItAnEdit, setPostId } =
+		useModal()
 
 	// eslint-disable-next-line no-unused-vars
 	const [config, userInfo] = generateUserInfo()
 
 	const isUserOnHisProfile = id === userInfo._id ? true : false
 
-	// const [isCopied, setIsCopied] = useState(false);
-
 	const handleUser = (e, id) => {
 		e.stopPropagation()
 		navigate(`/userProfile/${id}`)
 	}
 
-	console.log(post)
+	const handleEdit = content => {
+		setModal(true)
+		setIsItAnEdit(true)
+		setPostId(post?._id)
+		setNewPost(prev => {
+			return {
+				...prev,
+				postText: content.text,
+			}
+		})
+	}
 
 	return (
 		<StyledPost>
@@ -95,8 +108,12 @@ const Posts = props => {
 						<CarbonBookmarkAdd />
 						{isUserOnHisProfile && (
 							<Fragment>
-								<IcOutlineModeEdit />
-								<MaterialSymbolsDeleteOutline />
+								<IcOutlineModeEdit
+									onClick={() => handleEdit(post?.content)}
+								/>
+								<MaterialSymbolsDeleteOutline
+									onClick={() => handleDeletePost(post?._id)}
+								/>
 							</Fragment>
 						)}
 					</span>

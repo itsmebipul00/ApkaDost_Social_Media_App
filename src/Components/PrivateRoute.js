@@ -2,7 +2,7 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom'
 
 import { useSelector } from 'react-redux'
 
-import { Header, StyledMain } from '../Components'
+import { Header, StyledMain, NewPost } from '../Components'
 
 import { ModalProvider } from '../Providers/ModalProvider'
 
@@ -16,6 +16,8 @@ function PrivateRoute() {
 			<ModalProvider>
 				<Header />
 				<StyledMain>
+					<NewPost />
+
 					<Outlet />
 				</StyledMain>
 			</ModalProvider>
