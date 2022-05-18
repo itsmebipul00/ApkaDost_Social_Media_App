@@ -12,6 +12,13 @@ import { StyledReplyBox } from '../../Components'
 
 import { Posts } from '../../Components'
 
+import { API } from '../../utils/api'
+
+import { generateUserInfo } from '../../utils/generateUserInfo'
+
+import axios from 'axios'
+import { getUserInfo } from '../../Features/userSlice'
+
 const PostPage = () => {
 	const location = useLocation()
 
@@ -25,13 +32,41 @@ const PostPage = () => {
 
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
+	const userDetails = useSelector(state => state?.auth?.userDetails)
+
 	const postId = location.pathname.split('/')[2]
 
 	const [reply, setReply] = useState('')
 
+	const [replies, setReplies] = useState([])
+
+	console.log(post?._id)
+	// const [isReplied, setIsReplied] = useState(false)
+
+	// const [post] = postWithComments
+
+	// const comments = post?.comments
+
+	// const duplicateArrayComments = postWithComments?.slice(1)
+
+	// const usersCommented = duplicateArrayComments?.map(com =>
+	// 	Object.assign({}, ...com)
+	// )
+
+	// const a = comments.map((com, idx, comments) => com.user === usersCommented.map(user => user._id) && comments.user= user )
+
+	// const a = usersCommented?.reduce((acc, val) => val?._id === acc._id ? acc?.userval : acc, comments)
+
+	// console.log(a)
+
+	// console.log(comments, usersCommented)
+
+	console.log(replies)
 	useEffect(() => {
+		dispatch(getUserInfo(userId))
 		dispatch(getPost(postId))
-	}, [dispatch, postId, isLiked, isUnliked])
+		getReplies(post?._id)
+	}, [dispatch, postId, isLiked, isUnliked, post?._id, userId])
 
 	const handleLikes = id => {
 		const isLiked = post.likes.find(_id => _id === userId)
@@ -42,9 +77,38 @@ const PostPage = () => {
 		}
 	}
 
-	const handleBtnClick = id => {
-		console.log(id)
+	const handleBtnClick = async id => {
+		console.log(reply)
+		const [config] = generateUserInfo('json')
+
+		await axios.post(
+			`${API}/api/posts/replies/${id}/${userId}`,
+			{ reply },
+			config
+		)
+
+		setReply('')
+
+		dispatch(getPost(postId))
+
+		getReplies(post?._id)
 	}
+
+	const getReplies = async id => {
+		try {
+			const [config] = generateUserInfo()
+			const res = await axios.get(
+				`${API}/api/posts/replies/${id}`,
+				config
+			)
+
+			setReplies(res.data)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	console.log(replies)
 
 	return (
 		<Fragment>
@@ -52,7 +116,7 @@ const PostPage = () => {
 			<StyledReplyBox>
 				<div className='dp-wrapper'>
 					<img
-						src={`${window.location.origin}/${post?.user?.profilePic}`}
+						src={`${window.location.origin}/${userDetails?.profilePic}`}
 						alt={`${post?.user?.username}-dp`}
 						className='round-dp'
 					/>
@@ -60,6 +124,7 @@ const PostPage = () => {
 				<textarea
 					className='reply-textarea'
 					maxLength={50}
+					value={reply}
 					onChange={e => setReply(e.target.value)}
 				/>
 				<button
@@ -69,6 +134,14 @@ const PostPage = () => {
 					Reply
 				</button>
 			</StyledReplyBox>
+			{replies.map((rep, idx) => (
+				<Posts
+					post={rep}
+					key={idx}
+					handleLikes={handleLikes}
+					isPostPage={true}
+				/>
+			))}
 		</Fragment>
 	)
 }

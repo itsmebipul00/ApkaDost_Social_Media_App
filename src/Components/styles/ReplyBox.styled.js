@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const StyledReplyBox = styled.section`
 	width: 100%;
-	height: 20vh;
+	height: 15vh;
 	display: flex;
 	gap: 1rem;
 	padding: 0 1.5rem;

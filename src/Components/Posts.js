@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router-dom'
-
 import {
 	MdiCardsHeartOutline,
 	MdiCommentMultipleOutline,
@@ -10,8 +8,10 @@ import {
 
 import { StyledPost } from '../Components'
 
+import { useNavigate } from 'react-router-dom'
+
 const Posts = props => {
-	const { post, handleLikes } = props
+	const { post, handleLikes, isPostPage } = props
 
 	const navigate = useNavigate()
 
@@ -19,6 +19,8 @@ const Posts = props => {
 		e.stopPropagation()
 		navigate(`/userProfile/${id}`)
 	}
+
+	console.log(post)
 
 	return (
 		<StyledPost>
@@ -49,24 +51,30 @@ const Posts = props => {
 					</span> */}
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
-				<span className='cta-btns' onClick={e => e.stopPropagation()}>
-					<span className='heart'>
-						<MdiCardsHeartOutline
-							onClick={() => handleLikes(post?._id)}
-						/>
-						{post?.likes?.length > 0 &&
-							(post?.likes?.length === 1
-								? `${post?.likes?.length} like`
-								: `${post?.likes?.length} likes`)}
-					</span>
 
-					<MdiCommentMultipleOutline
-						onClick={() => navigate(`/post/${post?._id}`)}
-					/>
-					<PhShareNetwork />
-					<MaterialSymbolsArchiveOutline />
-					<CarbonBookmarkAdd />
-				</span>
+				{!isPostPage && (
+					<span
+						className='cta-btns'
+						onClick={e => e.stopPropagation()}>
+						<span className='heart'>
+							<MdiCardsHeartOutline
+								onClick={() => handleLikes(post?._id)}
+							/>
+							{post?.likes?.length}
+						</span>
+
+						<span className='comments'>
+							<MdiCommentMultipleOutline
+								onClick={() => navigate(`/post/${post?._id}`)}
+							/>
+							{post?.comments?.length}
+						</span>
+
+						<PhShareNetwork />
+						<MaterialSymbolsArchiveOutline />
+						<CarbonBookmarkAdd />
+					</span>
+				)}
 			</div>
 		</StyledPost>
 	)
