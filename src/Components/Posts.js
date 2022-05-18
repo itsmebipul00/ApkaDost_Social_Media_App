@@ -4,16 +4,30 @@ import {
 	PhShareNetwork,
 	MaterialSymbolsArchiveOutline,
 	CarbonBookmarkAdd,
+	IcOutlineModeEdit,
+	MaterialSymbolsDeleteOutline,
 } from '../Icones'
 
 import { StyledPost } from '../Components'
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { generateUserInfo } from '../utils/generateUserInfo'
+
+import { Fragment } from 'react'
 
 const Posts = props => {
 	const { post, handleLikes, isPostPage } = props
 
 	const navigate = useNavigate()
+
+	const { id } = useParams()
+
+	// eslint-disable-next-line no-unused-vars
+	const [config, userInfo] = generateUserInfo()
+
+	const isUserOnHisProfile = id === userInfo._id ? true : false
+
+	// const [isCopied, setIsCopied] = useState(false);
 
 	const handleUser = (e, id) => {
 		e.stopPropagation()
@@ -70,9 +84,21 @@ const Posts = props => {
 							{post?.comments?.length}
 						</span>
 
-						<PhShareNetwork />
+						<PhShareNetwork
+							onClick={() =>
+								navigator.clipboard.writeText(
+									`${window.location.origin}/post/${post?._id}`
+								)
+							}
+						/>
 						<MaterialSymbolsArchiveOutline />
 						<CarbonBookmarkAdd />
+						{isUserOnHisProfile && (
+							<Fragment>
+								<IcOutlineModeEdit />
+								<MaterialSymbolsDeleteOutline />
+							</Fragment>
+						)}
 					</span>
 				)}
 			</div>

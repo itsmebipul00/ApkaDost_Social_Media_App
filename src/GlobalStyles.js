@@ -16,6 +16,7 @@ export const GlobalStyles = createGlobalStyle`
 		--black: ${({ theme }) => theme.globalTheme.theme.black};
 		--gray: ${({ theme }) => theme.globalTheme.theme.gray};
 		--cream: ${({ theme }) => theme.globalTheme.theme.cream};
+		--blue: hsl(198, 74%, 47%);
 
 		--z-negative: -1;
 		--zIndex-1: 100;

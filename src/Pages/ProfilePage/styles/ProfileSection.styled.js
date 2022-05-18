@@ -49,6 +49,14 @@ export const StyledProfileSection = styled.section`
 	.user-bio {
 		margin-top: 1rem;
 	}
+	.user-url span {
+		color: var(--blue);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+	}
+	.user-url span:hover {
+		cursor: pointer;
+	}
 	.user-bgImg {
 		width: 100%;
 		height: 35vh;

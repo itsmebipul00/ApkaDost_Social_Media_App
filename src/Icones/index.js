@@ -158,6 +158,7 @@ export function MdiCommentMultipleOutline(props) {
 export function PhShareNetwork(props) {
 	return (
 		<svg width='1em' height='1em' viewBox='0 0 256 256' {...props}>
+			<title>Share Post</title>
 			<path
 				fill='currentColor'
 				d='M176 160a39.7 39.7 0 0 0-28.6 12.1l-46.1-29.6a40.3 40.3 0 0 0 0-29l46.1-29.6A40 40 0 1 0 136 56a41 41 0 0 0 2.7 14.5l-46.1 29.6a40 40 0 1 0 0 55.8l46.1 29.6A41 41 0 0 0 136 200a40 40 0 1 0 40-40Zm0-128a24 24 0 1 1-24 24a24.1 24.1 0 0 1 24-24ZM64 152a24 24 0 1 1 24-24a24.1 24.1 0 0 1-24 24Zm112 72a24 24 0 1 1 24-24a24.1 24.1 0 0 1-24 24Z'></path>
@@ -218,6 +219,16 @@ export function IcOutlineModeEdit(props) {
 			<path
 				fill='currentColor'
 				d='M3 21h3.75L17.81 9.94l-3.75-3.75L3 17.25V21zm2-2.92l9.06-9.06l.92.92L5.92 19H5v-.92zM18.37 3.29a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83a.996.996 0 0 0 0-1.41l-2.34-2.34z'></path>
+		</svg>
+	)
+}
+
+export function MaterialSymbolsDeleteOutline(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M8 19h8V9H8v10ZM5 6V4h3.5l1-1h5l1 1H19v2Zm3 15q-.825 0-1.412-.587Q6 19.825 6 19V7h12v12q0 .825-.587 1.413Q16.825 21 16 21Zm0-2h8h-8Z'></path>
 		</svg>
 	)
 }

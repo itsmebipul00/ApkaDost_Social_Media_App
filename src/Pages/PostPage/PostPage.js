@@ -40,28 +40,6 @@ const PostPage = () => {
 
 	const [replies, setReplies] = useState([])
 
-	console.log(post?._id)
-	// const [isReplied, setIsReplied] = useState(false)
-
-	// const [post] = postWithComments
-
-	// const comments = post?.comments
-
-	// const duplicateArrayComments = postWithComments?.slice(1)
-
-	// const usersCommented = duplicateArrayComments?.map(com =>
-	// 	Object.assign({}, ...com)
-	// )
-
-	// const a = comments.map((com, idx, comments) => com.user === usersCommented.map(user => user._id) && comments.user= user )
-
-	// const a = usersCommented?.reduce((acc, val) => val?._id === acc._id ? acc?.userval : acc, comments)
-
-	// console.log(a)
-
-	// console.log(comments, usersCommented)
-
-	console.log(replies)
 	useEffect(() => {
 		dispatch(getUserInfo(userId))
 		dispatch(getPost(postId))

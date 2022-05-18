@@ -80,7 +80,15 @@ function ProfilePage() {
 						<div className='profile-details'>
 							<p>{userInfo?.username}</p>
 							<p className='user-bio'>{userInfo?.bio}</p>
-							<p className='user-url'>URL</p>
+							<p
+								className='user-url'
+								onClick={() =>
+									navigator.clipboard.writeText(
+										`${window.location.origin}${location.pathname}`
+									)
+								}>
+								Profile: <span>{userInfo?.username}.nextxt</span>
+							</p>
 							<p className='follow-count'>
 								<span>
 									<span className='count'>
@@ -110,7 +118,12 @@ function ProfilePage() {
 			</div>
 			<div className='userPosts'>
 				{userPosts?.map((post, idx) => (
-					<Posts key={idx} post={post} handleLikes={handleLikes} />
+					<Posts
+						key={idx}
+						post={post}
+						handleLikes={handleLikes}
+						isUserProfile={true}
+					/>
 				))}
 			</div>
 		</StyledProfileSection>
