@@ -1,4 +1,4 @@
-import { useLocation, useParams } from 'react-router-dom'
+import { Outlet, useLocation, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../../utils/generateUserInfo'
 import { API } from '../../utils/api'
 import { randomImgAPI } from '../../utils/api'
@@ -8,10 +8,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Posts } from '../../Components'
 import axios from 'axios'
 import { useEffect } from 'react'
-import { getUsersPosts } from '../../Features/postsSlice'
+import {
+	getUsersPosts,
+	bookmarkPost,
+	removeBookMark,
+} from '../../Features/postsSlice'
 import { getUserInfo } from '../../Features/userSlice'
 import { likePost, unlikePost } from '../../Features/postsSlice'
 import { useModal } from '../../Providers/ModalProvider'
+
+import { Link } from 'react-router-dom'
 
 function ProfilePage() {
 	const location = useLocation()
@@ -19,12 +25,17 @@ function ProfilePage() {
 
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
-	// console.log(window.location.origin + location.pathname) //Future, use for url
-	// const id = location.pathname.split('/')[2]
+	const removePostBookMark = useSelector(
+		state => state?.posts?.removePostBookMark
+	)
+
+	const postBookMarked = useSelector(
+		state => state?.posts?.postBookMarked
+	)
 
 	const { id } = useParams()
 
-	const [config] = generateUserInfo()
+	const [config, loggedInUser] = generateUserInfo()
 
 	const userId = useSelector(state => state?.auth?.user?._id)
 
@@ -42,7 +53,15 @@ function ProfilePage() {
 			dispatch(getUsersPosts(userInfo?._id))
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [userInfo?._id, id, isLiked, isUnliked, modal])
+	}, [
+		userInfo?._id,
+		id,
+		isLiked,
+		isUnliked,
+		modal,
+		removePostBookMark,
+		postBookMarked,
+	])
 
 	const handleFollow = async id => {
 		await axios.put(
@@ -62,8 +81,8 @@ function ProfilePage() {
 	const isFollowed = userInfo?.follower?.find(id => id === userId)
 
 	const handleLikes = id => {
-		const post = userPosts.find(post => post._id === id)
-		const isLiked = post.likes.find(_id => _id === userId)
+		const post = userPosts?.find(post => post?._id === id)
+		const isLiked = post.likes?.includes(userId)
 
 		if (!isLiked) {
 			dispatch(likePost(id))
@@ -71,6 +90,21 @@ function ProfilePage() {
 			dispatch(unlikePost(id))
 		}
 	}
+
+	console.log(userPosts)
+
+	const handleBookMarks = id => {
+		const post = userPosts?.find(post => post?._id === id)
+		const isInBookMark = post?.bookmarks?.includes(userId)
+
+		if (!isInBookMark) {
+			dispatch(bookmarkPost(id))
+		} else {
+			dispatch(removeBookMark(id))
+		}
+	}
+
+	const isUserOnHisProfile = id === loggedInUser?._id ? true : false
 
 	return (
 		<StyledProfileSection>
@@ -102,20 +136,38 @@ function ProfilePage() {
 								}>
 								Profile: <span>{userInfo?.username}.nextxt</span>
 							</p>
-							<p className='follow-count'>
-								<span>
-									<span className='count'>
-										{userInfo?.following?.length}
-									</span>{' '}
-									Following
-								</span>
-								<span>
-									<span className='count'>
-										{userInfo?.follower?.length}
-									</span>{' '}
-									Followers
-								</span>
-							</p>
+							<div className='userDetails-wrapper'>
+								<p className='follow-count'>
+									<span>
+										<span className='count'>
+											{userInfo?.following?.length}
+										</span>{' '}
+										Following
+									</span>
+									<span>
+										<span className='count'>
+											{userInfo?.follower?.length}
+										</span>{' '}
+										Followers
+									</span>
+								</p>
+								{/* Later future reference */}
+								{/* {isUserOnHisProfile && (
+									<div className='profile-routes'>
+										<Link to={`/user/${userId}`}>Posts</Link>
+										<Link
+											className='link-to-bookmarks'
+											to='/user/bookmarks'>
+											Bookmarks
+										</Link>
+										<Link
+											className='link-to-bookmarks'
+											to='/user/likes'>
+											Likes
+										</Link>
+									</div>
+								)} */}
+							</div>
 						</div>
 					</div>
 					{userId === userInfo?._id ? (
@@ -129,6 +181,7 @@ function ProfilePage() {
 					)}
 				</div>
 			</div>
+
 			<div className='userPosts'>
 				{userPosts?.map((post, idx) => (
 					<Posts
@@ -137,6 +190,8 @@ function ProfilePage() {
 						handleLikes={handleLikes}
 						isUserProfile={true}
 						handleDeletePost={handleDeletePost}
+						handleBookMarks={handleBookMarks}
+						isUserOnHisProfile={isUserOnHisProfile}
 					/>
 				))}
 			</div>

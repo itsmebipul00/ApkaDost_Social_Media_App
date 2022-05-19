@@ -56,7 +56,6 @@ const PostPage = () => {
 	}
 
 	const handleBtnClick = async id => {
-		console.log(reply)
 		const [config] = generateUserInfo('json')
 
 		await axios.post(
@@ -85,8 +84,6 @@ const PostPage = () => {
 			console.log(error)
 		}
 	}
-
-	console.log(replies)
 
 	return (
 		<Fragment>

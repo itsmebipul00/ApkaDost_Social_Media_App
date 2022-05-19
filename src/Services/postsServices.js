@@ -69,6 +69,37 @@ const postsService = {
 		}
 	},
 
+	bookmarkPost: async postId => {
+		const [config, userInfo] = generateUserInfo()
+
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/bookmark/${postId}/${userInfo._id}`,
+				{},
+				config
+			)
+			console.log(res)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+
+	removeBookMark: async postId => {
+		const [config, userInfo] = generateUserInfo()
+
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/removeBookmark/${postId}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+
 	//Later
 	// draftPost: async newPost => {
 	// 	const config = generateUserInfo()

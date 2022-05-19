@@ -41,7 +41,7 @@ function Header() {
 	}
 	const [collapseNav, setCollapseNav] = useState(true)
 
-	const id = useSelector(state => state.auth.user._id)
+	const id = useSelector(state => state?.auth?.user?._id)
 
 	return (
 		<Fragment>
@@ -60,7 +60,7 @@ function Header() {
 				</li>
 				<li>
 					<GgProfile />
-					<NavLink to={`/userProfile/${id}`}>Profile</NavLink>
+					<NavLink to={`/user/${id}`}>Profile</NavLink>
 				</li>
 				<li>
 					<IcOutlineMessage />

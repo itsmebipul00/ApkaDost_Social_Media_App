@@ -35,8 +35,6 @@ function NewPost() {
 
 	const [config, userInfo] = generateUserInfo('formdata')
 
-	// console.log(userInfo)
-
 	const {
 		modal,
 		setModal,

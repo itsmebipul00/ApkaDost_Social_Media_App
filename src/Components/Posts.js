@@ -6,6 +6,7 @@ import {
 	CarbonBookmarkAdd,
 	IcOutlineModeEdit,
 	MaterialSymbolsDeleteOutline,
+	IcSharpBookmarkRemove,
 } from '../Icones'
 
 import { StyledPost } from '../Components'
@@ -16,13 +17,23 @@ import { generateUserInfo } from '../utils/generateUserInfo'
 import { useModal } from '../Providers/ModalProvider'
 
 import { Fragment } from 'react'
+import { useSelector } from 'react-redux'
 
 const Posts = props => {
-	const { post, handleLikes, isPostPage, handleDeletePost } = props
+	const {
+		post,
+		handleLikes,
+		isPostPage,
+		handleDeletePost,
+		handleBookMarks,
+		isUserOnHisProfile,
+	} = props
 
 	const navigate = useNavigate()
 
 	const { id } = useParams()
+
+	const userId = useSelector(state => state?.auth?.userDetails?._id)
 
 	const { setModal, setNewPost, setIsItAnEdit, setPostId } =
 		useModal()
@@ -30,11 +41,9 @@ const Posts = props => {
 	// eslint-disable-next-line no-unused-vars
 	const [config, userInfo] = generateUserInfo()
 
-	const isUserOnHisProfile = id === userInfo._id ? true : false
-
 	const handleUser = (e, id) => {
 		e.stopPropagation()
-		navigate(`/userProfile/${id}`)
+		navigate(`/user/${id}`)
 	}
 
 	const handleEdit = content => {
@@ -48,6 +57,8 @@ const Posts = props => {
 			}
 		})
 	}
+
+	// console.log(post)
 
 	return (
 		<StyledPost>
@@ -105,7 +116,17 @@ const Posts = props => {
 							}
 						/>
 						<MaterialSymbolsArchiveOutline />
-						<CarbonBookmarkAdd />
+
+						{post?.bookmarks?.includes(userInfo._id) ? (
+							<IcSharpBookmarkRemove
+								onClick={() => handleBookMarks(post?._id)}
+							/>
+						) : (
+							<CarbonBookmarkAdd
+								onClick={() => handleBookMarks(post?._id)}
+							/>
+						)}
+
 						{isUserOnHisProfile && (
 							<Fragment>
 								<IcOutlineModeEdit

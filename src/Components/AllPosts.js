@@ -6,6 +6,8 @@ import {
 	getAllPosts,
 	likePost,
 	unlikePost,
+	bookmarkPost,
+	removeBookMark,
 } from '../Features/postsSlice'
 
 import { Posts } from '../Components'
@@ -13,11 +15,21 @@ import { Posts } from '../Components'
 import { useModal } from '../Providers/ModalProvider'
 
 function AllPosts() {
-	const posts = useSelector(state => state.posts)
+	const allPosts = useSelector(state => state?.posts?.allPosts)
 
-	const userId = useSelector(state => state.auth.user._id)
+	const isLiked = useSelector(state => state?.posts?.isLiked)
 
-	const { allPosts, isLiked, isUnliked } = posts
+	const isUnliked = useSelector(state => state?.posts?.isUnliked)
+
+	const userId = useSelector(state => state?.auth?.user?._id)
+
+	const removePostBookMark = useSelector(
+		state => state?.posts?.removePostBookMark
+	)
+
+	const postBookMarked = useSelector(
+		state => state?.posts?.postBookMarked
+	)
 
 	const { modal } = useModal()
 
@@ -26,7 +38,14 @@ function AllPosts() {
 	useEffect(() => {
 		dispatch(getAllPosts())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [modal, dispatch, isLiked, isUnliked])
+	}, [
+		modal,
+		dispatch,
+		isLiked,
+		isUnliked,
+		removePostBookMark,
+		postBookMarked,
+	])
 
 	const handleLikes = id => {
 		const post = allPosts.find(post => post._id === id)
@@ -38,13 +57,31 @@ function AllPosts() {
 		}
 	}
 
+	console.log(allPosts)
+
+	const handleBookMarks = id => {
+		const post = allPosts.find(post => post._id === id)
+		const isInBookMark = post?.bookmarks?.includes(userId)
+
+		if (!isInBookMark) {
+			dispatch(bookmarkPost(id))
+		} else {
+			dispatch(removeBookMark(id))
+		}
+	}
+
 	return (
 		<Fragment>
 			{allPosts
 				.slice(0)
 				.reverse()
 				.map((post, idx) => (
-					<Posts key={idx} post={post} handleLikes={handleLikes} />
+					<Posts
+						key={idx}
+						post={post}
+						handleLikes={handleLikes}
+						handleBookMarks={handleBookMarks}
+					/>
 				))}
 		</Fragment>
 	)

@@ -25,7 +25,20 @@ export const StyledProfileSection = styled.section`
 			}
 		}
 	}
+	.userDetails-wrapper {
+		display: flex;
+		flex-direction: column;
+		@media (min-width: 60em) {
+			flex-direction: row;
+			margin: 1rem 0;
+		}
+		justify-content: space-between;
+	}
 	.follow-count {
+		margin: 1rem 0;
+		@media (min-width: 60em) {
+			margin: 0;
+		}
 		display: flex;
 		font-size: var(--fs-400);
 		gap: 1rem;
@@ -38,6 +51,18 @@ export const StyledProfileSection = styled.section`
 			gap: 2rem;
 			font-size: var(--fs-500);
 		}
+	}
+	.profile-routes {
+		color: var(--blue);
+		display: flex;
+		gap: 2rem;
+		text-decoration: underline;
+		text-decoration-thickness: 3px;
+	}
+
+	.profile-routes:hover,
+	.profile-routes:focus {
+		text-decoration-color: var(--white);
 	}
 	.profile-details {
 		position: absolute;
@@ -80,6 +105,6 @@ export const StyledProfileSection = styled.section`
 		border-radius: 50%;
 	}
 	.userPosts {
-		margin-top: 12rem;
+		margin-top: 13.5rem;
 	}
 `

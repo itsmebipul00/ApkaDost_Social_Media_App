@@ -24,8 +24,12 @@ export const StyledPost = styled.section`
 			}
 			svg {
 				cursor: pointer;
-				width: 1.5rem;
-				height: 1.5rem;
+				width: 1rem;
+				height: 1rem;
+				@media (min-width: 60em) {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
 				margin-right: 0.5rem;
 			}
 		}

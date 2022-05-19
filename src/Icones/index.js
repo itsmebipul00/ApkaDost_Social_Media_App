@@ -232,3 +232,23 @@ export function MaterialSymbolsDeleteOutline(props) {
 		</svg>
 	)
 }
+
+export function MaterialSymbolsBookmarkRemoveOutlineSharp(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M5 21V3h8v2H7v12.95l5-2.15l5 2.15V11h2v10l-7-3ZM7 5h6h-6Zm14 2h-6V5h6Z'></path>
+		</svg>
+	)
+}
+
+export function IcSharpBookmarkRemove(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M21 7h-6V5h6v2zm-2 3.9c-.64.13-1.32.14-2.02 0c-1.91-.38-3.47-1.92-3.87-3.83A5.02 5.02 0 0 1 14 3H5v18l7-3l7 3V10.9z'></path>
+		</svg>
+	)
+}

@@ -46,6 +46,16 @@ export const getPost = createAsyncThunk(
 	async id => await postsService.getPost(id)
 )
 
+export const bookmarkPost = createAsyncThunk(
+	'posts/bookmark',
+	async postId => await postsService.bookmarkPost(postId)
+)
+
+export const removeBookMark = createAsyncThunk(
+	'posts/removeBookmark',
+	async postId => await postsService.removeBookMark(postId)
+)
+
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
@@ -110,6 +120,30 @@ const postsSlice = createSlice({
 			})
 			.addCase(getPost.fulfilled, (state, action) => {
 				state.post = action.payload
+				state.isLoading = false
+			})
+			.addCase(bookmarkPost.pending, state => {
+				state.postBookMarked = false
+				state.isLoading = false
+			})
+			.addCase(bookmarkPost.fulfilled, state => {
+				state.postBookMarked = true
+				state.isLoading = false
+			})
+			.addCase(bookmarkPost.rejected, state => {
+				state.postBookMarked = false
+				state.isLoading = false
+			})
+			.addCase(removeBookMark.pending, state => {
+				state.removePostBookMark = false
+				state.isLoading = false
+			})
+			.addCase(removeBookMark.fulfilled, state => {
+				state.removePostBookMark = true
+				state.isLoading = false
+			})
+			.addCase(removeBookMark.rejected, state => {
+				state.removePostBookMark = false
 				state.isLoading = false
 			})
 	},
