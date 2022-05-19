@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 function useLocalStorage(key, initialValue) {
 	const jsonString = localStorage.getItem(key)
 
+	console.log(jsonString)
+
 	const initialState = () => {
 		if (jsonString !== null) return JSON.parse(jsonString)
 		return initialValue

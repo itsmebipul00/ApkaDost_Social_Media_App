@@ -7,8 +7,17 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Fragment, useEffect } from 'react'
 import { Posts } from '../../Components'
-import { likePost, unlikePost } from '../../Features/postsSlice'
-import { generateUserInfo } from '../../utils/generateUserInfo'
+import { useLocalStorage } from '../../Hooks'
+import {
+	likePost,
+	unlikePost,
+	sortByTrending,
+	sortByRecent,
+	sortByOldest,
+	// resetFilters,
+} from '../../Features/postsSlice'
+
+import { StyledFilters } from './styles/Filters.styled'
 function HomePage() {
 	const userId = useSelector(state => state?.auth?.user?._id)
 
@@ -17,6 +26,8 @@ function HomePage() {
 	const isLiked = useSelector(state => state?.posts?.isLiked)
 
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
+
+	const sortBy = useSelector(state => state?.posts?.sortBy)
 
 	const dispatch = useDispatch()
 
@@ -40,9 +51,6 @@ function HomePage() {
 
 	console.log(userFeed)
 
-	// eslint-disable-next-line no-unused-vars
-	// const [config, userInfo] = generateUserInfo()
-
 	const handleBookMarks = id => {
 		const post = userFeed?.find(post => post?._id === id)
 		const isInBookMark = post?.bookmarks?.includes(userId)
@@ -56,8 +64,47 @@ function HomePage() {
 		dispatch(getUserFeed(userId))
 	}
 
+	// eslint-disable-next-line no-unused-vars
+	const [_, setSortBy] = useLocalStorage('sortBy', sortBy)
+
+	const selectSortBy = value => {
+		setSortBy(value)
+		if (value === 'trending') {
+			dispatch(sortByTrending())
+		} else {
+			dispatch(sortByRecent())
+		}
+	}
+
 	return (
 		<Fragment>
+			<StyledFilters role='list'>
+				<label htmlFor='newest'>
+					<input
+						type='radio'
+						id='newest'
+						value='newest'
+						className='radio'
+						name='sort'
+						checked={sortBy === 'newest'}
+						onChange={e => selectSortBy(e.target.value)}
+					/>
+					<span className='text'>Recent</span>
+				</label>
+
+				<label htmlFor='trending'>
+					<input
+						type='radio'
+						id='trending'
+						value='trending'
+						className='radio'
+						name='sort'
+						checked={sortBy === 'trending'}
+						onChange={e => selectSortBy(e.target.value)}
+					/>
+					<span className='text'>Trending</span>
+				</label>
+			</StyledFilters>
 			{userFeed.map((post, key) => (
 				<Posts
 					post={post}

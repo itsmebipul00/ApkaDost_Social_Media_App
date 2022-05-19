@@ -25,6 +25,12 @@ export const GlobalStyles = createGlobalStyle`
 		--zIndex-4: 400;
 		--zIndex-5: 500;
 
+		input[type="radio"] {
+			width: 0;
+			height: 0;
+			opacity: 0;
+		}
+
 		--ff-mono-inconsolata: 'Inconsolata', monospace;
 
 		--letter-spacing-1: 1px;

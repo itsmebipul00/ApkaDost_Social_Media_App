@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import postsService from '../Services/postsServices'
 
+const sortFromLocalStorage =
+	localStorage.getItem('sortBy') ?? 'newest'
+
 const initialState = {
 	allPosts: [],
 	isLoading: false,
@@ -9,6 +12,7 @@ const initialState = {
 	userPosts: [],
 	userFeed: [],
 	post: [],
+	sortBy: sortFromLocalStorage,
 }
 
 export const createNewPost = createAsyncThunk(
@@ -59,6 +63,23 @@ export const removeBookMark = createAsyncThunk(
 const postsSlice = createSlice({
 	name: 'posts',
 	initialState,
+	reducers: {
+		sortByTrending: state => {
+			state.userFeed = state.userFeed.sort(
+				(x, y) => y.likes.length - x.likes.length
+			)
+		},
+		sortByRecent: state => {
+			state.userFeed = state.userFeed.sort(
+				(x, y) => new Date(y?.createdAt) - new Date(x?.createdAt)
+			)
+		},
+		sortByOldest: state => {
+			state.userFeed = state.userFeed.sort(
+				(x, y) => new Date(y?.createdAt) - new Date(x?.createdAt)
+			)
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(getAllPosts.pending, state => {
@@ -148,5 +169,8 @@ const postsSlice = createSlice({
 			})
 	},
 })
+
+export const { sortByTrending, sortByRecent, sortByOldest } =
+	postsSlice.actions
 
 export default postsSlice.reducer

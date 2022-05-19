@@ -7,6 +7,7 @@ import {
 	IcOutlineModeEdit,
 	MaterialSymbolsDeleteOutline,
 	IcSharpBookmarkRemove,
+	IcSharpTimeline,
 } from '../Icones'
 
 import { StyledPost } from '../Components'
@@ -58,7 +59,13 @@ const Posts = props => {
 		})
 	}
 
-	// console.log(post)
+	// console.log(
+	// 	new Date(post?.createdAt)
+	// 		.toString()
+	// 		.split(' ')
+	// 		.slice(1, 5)
+	// 		.join(' ')
+	// )
 
 	return (
 		<StyledPost>
@@ -79,14 +86,14 @@ const Posts = props => {
 						<p>{post?.user?.username}</p>
 					</button>
 					{/* Future reference */}
-					{/* <span className='uploaded-on'>
+					<span className='uploaded-on'>
 						<IcSharpTimeline />
-						<span>
-							{formatDistance(parseISO(post?.updatedAt), Date.now(), {
-								addSuffix: true,
-							})}
-						</span>
-					</span> */}
+						{new Date(post?.createdAt)
+							?.toString()
+							?.split(' ')
+							?.slice(1, 3)
+							?.join(' ')}
+					</span>
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
 

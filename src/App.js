@@ -12,7 +12,6 @@ import {
 	HomePage,
 	ProfilePage,
 	PostPage,
-	BookmarkPage,
 } from './Pages'
 
 import { ThemeProvider } from 'styled-components'
@@ -40,7 +39,6 @@ function App() {
 						</Route>
 						<Route element={<PrivateRoute />}>
 							<Route path='/user/:id' element={<ProfilePage />} />
-							<Route path='/bookmark' element={<BookmarkPage />} />
 							<Route path='/' element={<HomePage />} />
 							<Route path='/explore' element={<ExplorePage />} />
 							<Route path='/post/:id' element={<PostPage />} />
