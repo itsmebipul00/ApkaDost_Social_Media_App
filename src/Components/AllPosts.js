@@ -57,8 +57,6 @@ function AllPosts() {
 		}
 	}
 
-	console.log(allPosts)
-
 	const handleBookMarks = id => {
 		const post = allPosts.find(post => post._id === id)
 		const isInBookMark = post?.bookmarks?.includes(userId)

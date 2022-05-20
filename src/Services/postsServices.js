@@ -78,7 +78,6 @@ const postsService = {
 				{},
 				config
 			)
-			console.log(res)
 			return res.data
 		} catch (error) {
 			throw error

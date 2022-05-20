@@ -1,13 +1,18 @@
-import { Outlet, useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../../utils/generateUserInfo'
 import { API } from '../../utils/api'
 import { randomImgAPI } from '../../utils/api'
 import { StyledProfileSection } from './styles/ProfileSection.styled.js'
-import { IcOutlineModeEdit } from '../../Icones'
+import { StyledEditForm } from './styles/EditForm.styled.js'
+import {
+	IcOutlineModeEdit,
+	DashiconsFormatGallery,
+	ZondiconsCloseSolid,
+} from '../../Icones'
 import { useDispatch, useSelector } from 'react-redux'
 import { Posts } from '../../Components'
 import axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	getUsersPosts,
 	bookmarkPost,
@@ -16,8 +21,6 @@ import {
 import { getUserInfo } from '../../Features/userSlice'
 import { likePost, unlikePost } from '../../Features/postsSlice'
 import { useModal } from '../../Providers/ModalProvider'
-
-import { Link } from 'react-router-dom'
 
 function ProfilePage() {
 	const location = useLocation()
@@ -43,6 +46,17 @@ function ProfilePage() {
 
 	const userInfo = useSelector(state => state?.auth?.userDetails)
 
+	const [showEditModal, setShowEditModal] = useState(false)
+	const [profilePreview, setprofPreview] = useState(null)
+	const [bgPreview, setbgPreview] = useState(null)
+
+	const [editData, setEditData] = useState({
+		username: userInfo?.username,
+		bio: userInfo?.username,
+		profilePic: null,
+		bgImage: null,
+	})
+
 	const dispatch = useDispatch()
 
 	const { modal } = useModal()
@@ -61,6 +75,7 @@ function ProfilePage() {
 		modal,
 		removePostBookMark,
 		postBookMarked,
+		showEditModal,
 	])
 
 	const handleFollow = async id => {
@@ -91,8 +106,6 @@ function ProfilePage() {
 		}
 	}
 
-	console.log(userPosts)
-
 	const handleBookMarks = id => {
 		const post = userPosts?.find(post => post?._id === id)
 		const isInBookMark = post?.bookmarks?.includes(userId)
@@ -105,6 +118,80 @@ function ProfilePage() {
 	}
 
 	const isUserOnHisProfile = id === loggedInUser?._id ? true : false
+
+	const handleEdit = userInfo => {
+		setShowEditModal(true)
+
+		setEditData(prev => {
+			return {
+				...prev,
+				username: userInfo?.username,
+				bio: userInfo?.bio,
+			}
+		})
+	}
+
+	const uploadProfilePic = e => {
+		setprofPreview(URL.createObjectURL(e.target.files[0]))
+
+		setEditData(prev => {
+			return {
+				...prev,
+				profilePic: e.target.files[0],
+			}
+		})
+	}
+
+	const uploadBackgroundImg = e => {
+		setbgPreview(URL.createObjectURL(e.target.files[0]))
+
+		setEditData(prev => {
+			return {
+				...prev,
+				bgImage: e.target.files[0],
+			}
+		})
+	}
+
+	const handleEditForm = e => {
+		e.preventDefault()
+		const { name, value } = e.target
+		setEditData(prev => {
+			return {
+				...prev,
+				[name]: value,
+			}
+		})
+	}
+
+	const handleSubmit = async e => {
+		e.preventDefault()
+
+		setShowEditModal(false)
+
+		const [config] = generateUserInfo('formdata')
+
+		let newEditData = new FormData()
+
+		newEditData.append(
+			'username',
+			editData.username ?? userInfo?.username
+		)
+
+		newEditData.append('bio', editData.bio ?? userInfo?.bio)
+
+		newEditData.append('profilePic', editData.profilePic)
+
+		newEditData.append('bgImage', editData.bgImage)
+
+		const res = await axios.put(
+			`${API}/api/users/${userInfo?._id}`,
+			newEditData,
+			config
+		)
+
+		if (res) dispatch(getUserInfo(id))
+	}
 
 	return (
 		<StyledProfileSection>
@@ -171,7 +258,7 @@ function ProfilePage() {
 						</div>
 					</div>
 					{userId === userInfo?._id ? (
-						<button>
+						<button onClick={() => handleEdit(userInfo)}>
 							Edit Profile <IcOutlineModeEdit />
 						</button>
 					) : (
@@ -181,6 +268,65 @@ function ProfilePage() {
 					)}
 				</div>
 			</div>
+
+			<StyledEditForm showEditModal={showEditModal}>
+				<form onSubmit={handleSubmit}>
+					<ZondiconsCloseSolid
+						className='close-icon'
+						onClick={() => setShowEditModal(false)}
+					/>
+					<input
+						placeholder='Username'
+						name='username'
+						value={editData.username}
+						onChange={handleEditForm}
+					/>
+					<textarea
+						placeholder='Bio'
+						name='bio'
+						value={editData.bio}
+						onChange={handleEditForm}
+						maxLength='30'></textarea>
+					<label htmlFor='img-vid'>
+						Background:
+						<input
+							id='img-vid'
+							type='file'
+							accept='image/*'
+							onChange={uploadBackgroundImg}
+							hidden
+						/>
+						<DashiconsFormatGallery />
+						{bgPreview && (
+							<img
+								src={bgPreview}
+								alt='preview-img'
+								className='preview-imgs'
+								type='image/*'
+							/>
+						)}
+					</label>
+					<label htmlFor='img-vid' className='img-label'>
+						Dp
+						<input
+							id='img-vid'
+							type='file'
+							accept='image/*'
+							onChange={uploadProfilePic}
+							hidden
+						/>
+						<DashiconsFormatGallery />
+						{profilePreview && (
+							<img
+								src={profilePreview}
+								alt='preview-img'
+								className='preview-imgs'
+							/>
+						)}
+					</label>
+					<button>Edit</button>
+				</form>
+			</StyledEditForm>
 
 			<div className='userPosts'>
 				{userPosts?.map((post, idx) => (
@@ -198,5 +344,4 @@ function ProfilePage() {
 		</StyledProfileSection>
 	)
 }
-
 export default ProfilePage

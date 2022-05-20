@@ -13,7 +13,7 @@ import {
 	unlikePost,
 	sortByTrending,
 	sortByRecent,
-	sortByOldest,
+
 	// resetFilters,
 } from '../../Features/postsSlice'
 
@@ -48,8 +48,6 @@ function HomePage() {
 			dispatch(unlikePost(id))
 		}
 	}
-
-	console.log(userFeed)
 
 	const handleBookMarks = id => {
 		const post = userFeed?.find(post => post?._id === id)

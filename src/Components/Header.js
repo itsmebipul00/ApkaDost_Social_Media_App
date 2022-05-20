@@ -7,7 +7,6 @@ import {
 	RiLogoutCircleRLine,
 	TablerHome,
 	Fa6BrandsWpexplorer,
-	IcOutlineBookmarks,
 	GgProfile,
 	IcOutlineMessage,
 	IcOutlineSearch,
@@ -54,10 +53,7 @@ function Header() {
 					<Fa6BrandsWpexplorer />
 					<NavLink to='/explore'>Explore</NavLink>
 				</li>
-				<li>
-					<IcOutlineBookmarks />
-					<NavLink to='/bookmark'>BookMarks</NavLink>
-				</li>
+
 				<li>
 					<GgProfile />
 					<NavLink to={`/user/${id}`}>Profile</NavLink>

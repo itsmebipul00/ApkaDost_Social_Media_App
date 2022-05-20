@@ -12,13 +12,12 @@ import {
 
 import { StyledPost } from '../Components'
 
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { generateUserInfo } from '../utils/generateUserInfo'
 
 import { useModal } from '../Providers/ModalProvider'
 
 import { Fragment } from 'react'
-import { useSelector } from 'react-redux'
 
 const Posts = props => {
 	const {
@@ -31,10 +30,6 @@ const Posts = props => {
 	} = props
 
 	const navigate = useNavigate()
-
-	const { id } = useParams()
-
-	const userId = useSelector(state => state?.auth?.userDetails?._id)
 
 	const { setModal, setNewPost, setIsItAnEdit, setPostId } =
 		useModal()
@@ -58,14 +53,6 @@ const Posts = props => {
 			}
 		})
 	}
-
-	// console.log(
-	// 	new Date(post?.createdAt)
-	// 		.toString()
-	// 		.split(' ')
-	// 		.slice(1, 5)
-	// 		.join(' ')
-	// )
 
 	return (
 		<StyledPost>
