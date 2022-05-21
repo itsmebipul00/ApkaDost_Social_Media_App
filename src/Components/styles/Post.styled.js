@@ -6,10 +6,6 @@ export const StyledPost = styled.section`
 	@media (min-width: 40em) {
 		padding: 3rem;
 	}
-
-	.dp-wrapper {
-		width: 4rem;
-	}
 	.post-details {
 		display: grid;
 		gap: 1.5rem;
@@ -28,8 +24,12 @@ export const StyledPost = styled.section`
 			}
 			svg {
 				cursor: pointer;
-				width: 1.5rem;
-				height: 1.5rem;
+				width: 1rem;
+				height: 1rem;
+				@media (min-width: 60em) {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
 				margin-right: 0.5rem;
 			}
 		}
@@ -57,7 +57,7 @@ export const StyledPost = styled.section`
 	}
 
 	.profile-dp {
-		width: 100%;
+		width: 5rem;
 		aspect-ratio: 1;
 		border-radius: 50%;
 	}

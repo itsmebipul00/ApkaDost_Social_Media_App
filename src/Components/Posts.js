@@ -1,22 +1,57 @@
-import { useNavigate } from 'react-router-dom'
-
 import {
 	MdiCardsHeartOutline,
 	MdiCommentMultipleOutline,
 	PhShareNetwork,
 	MaterialSymbolsArchiveOutline,
 	CarbonBookmarkAdd,
+	IcOutlineModeEdit,
+	MaterialSymbolsDeleteOutline,
+	IcSharpBookmarkRemove,
+	IcSharpTimeline,
 } from '../Icones'
 
 import { StyledPost } from '../Components'
 
+import { useNavigate } from 'react-router-dom'
+import { generateUserInfo } from '../utils/generateUserInfo'
+
+import { useModal } from '../Providers/ModalProvider'
+
+import { Fragment } from 'react'
+
 const Posts = props => {
-	const { post, handleLikes } = props
+	const {
+		post,
+		handleLikes,
+		isPostPage,
+		handleDeletePost,
+		handleBookMarks,
+		isUserOnHisProfile,
+	} = props
 
 	const navigate = useNavigate()
 
-	const handleUser = id => {
-		navigate(`/userProfile/${id}`)
+	const { setModal, setNewPost, setIsItAnEdit, setPostId } =
+		useModal()
+
+	// eslint-disable-next-line no-unused-vars
+	const [config, userInfo] = generateUserInfo()
+
+	const handleUser = (e, id) => {
+		e.stopPropagation()
+		navigate(`/user/${id}`)
+	}
+
+	const handleEdit = content => {
+		setModal(true)
+		setIsItAnEdit(true)
+		setPostId(post?._id)
+		setNewPost(prev => {
+			return {
+				...prev,
+				postText: content.text,
+			}
+		})
 	}
 
 	return (
@@ -28,40 +63,76 @@ const Posts = props => {
 					className='profile-dp'
 				/>
 			</div>
-			<div className='post-details'>
+			<div
+				className='post-details'
+				onClick={() => navigate(`/post/${post?._id}`)}>
 				<span className='postedBy-info'>
 					<button
-						onClick={() => handleUser(post?.user?._id)}
+						onClick={e => handleUser(e, post?.user?._id)}
 						className='post-user'>
 						<p>{post?.user?.username}</p>
 					</button>
 					{/* Future reference */}
-					{/* <span className='uploaded-on'>
+					<span className='uploaded-on'>
 						<IcSharpTimeline />
-						<span>
-							{formatDistance(parseISO(post?.updatedAt), Date.now(), {
-								addSuffix: true,
-							})}
-						</span>
-					</span> */}
+						{new Date(post?.createdAt)
+							?.toString()
+							?.split(' ')
+							?.slice(1, 3)
+							?.join(' ')}
+					</span>
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
-				<span className='cta-btns'>
-					<span className='heart'>
-						<MdiCardsHeartOutline
-							onClick={() => handleLikes(post?._id)}
-						/>
-						{post?.likes?.length > 0 &&
-							(post?.likes?.length === 1
-								? `${post?.likes?.length} like`
-								: `${post?.likes?.length} likes`)}
-					</span>
 
-					<MdiCommentMultipleOutline />
-					<PhShareNetwork />
-					<MaterialSymbolsArchiveOutline />
-					<CarbonBookmarkAdd />
-				</span>
+				{!isPostPage && (
+					<span
+						className='cta-btns'
+						onClick={e => e.stopPropagation()}>
+						<span className='heart'>
+							<MdiCardsHeartOutline
+								onClick={() => handleLikes(post?._id)}
+							/>
+							{post?.likes?.length}
+						</span>
+
+						<span className='comments'>
+							<MdiCommentMultipleOutline
+								onClick={() => navigate(`/post/${post?._id}`)}
+							/>
+							{post?.comments?.length}
+						</span>
+
+						<PhShareNetwork
+							onClick={() =>
+								navigator.clipboard.writeText(
+									`${window.location.origin}/post/${post?._id}`
+								)
+							}
+						/>
+						<MaterialSymbolsArchiveOutline />
+
+						{post?.bookmarks?.includes(userInfo._id) ? (
+							<IcSharpBookmarkRemove
+								onClick={() => handleBookMarks(post?._id)}
+							/>
+						) : (
+							<CarbonBookmarkAdd
+								onClick={() => handleBookMarks(post?._id)}
+							/>
+						)}
+
+						{isUserOnHisProfile && (
+							<Fragment>
+								<IcOutlineModeEdit
+									onClick={() => handleEdit(post?.content)}
+								/>
+								<MaterialSymbolsDeleteOutline
+									onClick={() => handleDeletePost(post?._id)}
+								/>
+							</Fragment>
+						)}
+					</span>
+				)}
 			</div>
 		</StyledPost>
 	)

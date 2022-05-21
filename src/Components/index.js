@@ -16,3 +16,5 @@ export { StyledNewPost } from './styles/NewPost.styled'
 export { StyledMain } from './styles/Main.styled'
 
 export { StyledPost } from './styles/Post.styled'
+
+export { StyledReplyBox } from './styles/ReplyBox.styled'

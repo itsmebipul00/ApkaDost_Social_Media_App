@@ -7,7 +7,6 @@ import {
 	RiLogoutCircleRLine,
 	TablerHome,
 	Fa6BrandsWpexplorer,
-	IcOutlineBookmarks,
 	GgProfile,
 	IcOutlineMessage,
 	IcOutlineSearch,
@@ -41,7 +40,7 @@ function Header() {
 	}
 	const [collapseNav, setCollapseNav] = useState(true)
 
-	const id = useSelector(state => state.auth.user._id)
+	const id = useSelector(state => state?.auth?.user?._id)
 
 	return (
 		<Fragment>
@@ -54,13 +53,10 @@ function Header() {
 					<Fa6BrandsWpexplorer />
 					<NavLink to='/explore'>Explore</NavLink>
 				</li>
-				<li>
-					<IcOutlineBookmarks />
-					<NavLink to='/bookmark'>BookMarks</NavLink>
-				</li>
+
 				<li>
 					<GgProfile />
-					<NavLink to={`/userProfile/${id}`}>Profile</NavLink>
+					<NavLink to={`/user/${id}`}>Profile</NavLink>
 				</li>
 				<li>
 					<IcOutlineMessage />

@@ -16,6 +16,7 @@ export const GlobalStyles = createGlobalStyle`
 		--black: ${({ theme }) => theme.globalTheme.theme.black};
 		--gray: ${({ theme }) => theme.globalTheme.theme.gray};
 		--cream: ${({ theme }) => theme.globalTheme.theme.cream};
+		--blue: hsl(198, 74%, 47%);
 
 		--z-negative: -1;
 		--zIndex-1: 100;
@@ -23,6 +24,12 @@ export const GlobalStyles = createGlobalStyle`
 		--zIndex-3: 300;
 		--zIndex-4: 400;
 		--zIndex-5: 500;
+
+		input[type="radio"] {
+			width: 0;
+			height: 0;
+			opacity: 0;
+		}
 
 		--ff-mono-inconsolata: 'Inconsolata', monospace;
 

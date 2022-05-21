@@ -69,6 +69,36 @@ const postsService = {
 		}
 	},
 
+	bookmarkPost: async postId => {
+		const [config, userInfo] = generateUserInfo()
+
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/bookmark/${postId}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+
+	removeBookMark: async postId => {
+		const [config, userInfo] = generateUserInfo()
+
+		try {
+			const res = await axios.put(
+				`${API}/api/posts/removeBookmark/${postId}/${userInfo._id}`,
+				{},
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+
 	//Later
 	// draftPost: async newPost => {
 	// 	const config = generateUserInfo()
@@ -89,6 +119,15 @@ const postsService = {
 
 		try {
 			const res = await axios.get(`${API}/api/posts/`, config)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
+	getPost: async id => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(`${API}/api/posts/${id}`, config)
 			return res.data
 		} catch (error) {
 			throw error

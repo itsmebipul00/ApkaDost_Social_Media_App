@@ -25,7 +25,20 @@ export const StyledProfileSection = styled.section`
 			}
 		}
 	}
+	.userDetails-wrapper {
+		display: flex;
+		flex-direction: column;
+		@media (min-width: 60em) {
+			flex-direction: row;
+			margin: 1rem 0;
+		}
+		justify-content: space-between;
+	}
 	.follow-count {
+		margin: 1rem 0;
+		@media (min-width: 60em) {
+			margin: 0;
+		}
 		display: flex;
 		font-size: var(--fs-400);
 		gap: 1rem;
@@ -39,6 +52,18 @@ export const StyledProfileSection = styled.section`
 			font-size: var(--fs-500);
 		}
 	}
+	.profile-routes {
+		color: var(--blue);
+		display: flex;
+		gap: 2rem;
+		text-decoration: underline;
+		text-decoration-thickness: 3px;
+	}
+
+	.profile-routes:hover,
+	.profile-routes:focus {
+		text-decoration-color: var(--white);
+	}
 	.profile-details {
 		position: absolute;
 		inset: 120% 0% 0% 6%;
@@ -48,6 +73,14 @@ export const StyledProfileSection = styled.section`
 	}
 	.user-bio {
 		margin-top: 1rem;
+	}
+	.user-url span {
+		color: var(--blue);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+	}
+	.user-url span:hover {
+		cursor: pointer;
 	}
 	.user-bgImg {
 		width: 100%;
@@ -72,6 +105,6 @@ export const StyledProfileSection = styled.section`
 		border-radius: 50%;
 	}
 	.userPosts {
-		margin-top: 12rem;
+		margin-top: 13.5rem;
 	}
 `
