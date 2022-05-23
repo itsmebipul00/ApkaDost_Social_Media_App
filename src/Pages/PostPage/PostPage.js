@@ -18,6 +18,7 @@ import { generateUserInfo } from '../../utils/generateUserInfo'
 
 import axios from 'axios'
 import { getUserInfo } from '../../Features/userSlice'
+import toast from 'react-hot-toast'
 
 const PostPage = () => {
 	const location = useLocation()
@@ -58,17 +59,22 @@ const PostPage = () => {
 	const handleBtnClick = async id => {
 		const [config] = generateUserInfo('json')
 
-		await axios.post(
+		const res = await axios.post(
 			`${API}/api/posts/replies/${id}/${userId}`,
 			{ reply },
 			config
 		)
 
-		setReply('')
+		if (res.data) {
+			setReply('')
 
-		dispatch(getPost(postId))
+			dispatch(getPost(postId))
 
-		getReplies(post?._id)
+			if (post) {
+				getReplies(post?._id)
+			}
+		}
+		toast.success('Comment Posted')
 	}
 
 	const getReplies = async id => {

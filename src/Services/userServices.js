@@ -33,6 +33,19 @@ const userService = {
 			throw error
 		}
 	},
+	getBookmarks: async id => {
+		const [config] = generateUserInfo()
+
+		try {
+			const res = await axios.get(
+				`${API}/api/users/bookmarks/${id}`,
+				config
+			)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 }
 
 export default userService

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Fragment } from 'react'
 
 import {
 	createNewPost,
@@ -19,12 +19,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { randomImgAPI } from '../utils/api'
 
 import { useModal } from '../Providers/ModalProvider'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../utils/generateUserInfo'
 
-import { API } from '../utils/api'
+import { API, cloudAPI } from '../utils/api'
 
 import axios from 'axios'
+
+import { timeout } from '../utils/timeout'
+import toast from 'react-hot-toast'
 
 function NewPost() {
 	//add img source later in backed db
@@ -32,6 +35,10 @@ function NewPost() {
 	const { id } = useParams()
 
 	const user = useSelector(state => state.auth.user)
+
+	const isNewPostCreated = useSelector(
+		state => state?.posts?.isNewPostCreated
+	)
 
 	const [config, userInfo] = generateUserInfo('formdata')
 
@@ -41,22 +48,18 @@ function NewPost() {
 		initialState,
 		newPost,
 		setNewPost,
-		setUploadFileType,
-		uploadfileType,
 		preview,
 		setPreview,
 		isItAnEdit,
 		postId,
 		setIsItAnEdit,
+		isItaDraft,
+		setIsItaDraft,
 	} = useModal()
 
 	const { dp, username } = user
 
-	const imgSrc = !!dp
-		? `${window.location.origin}/${dp}`
-		: randomImgAPI
-
-	const handleSubmitPost = () => {}
+	const imgSrc = !!dp ? dp : randomImgAPI
 
 	const dispatch = useDispatch()
 
@@ -72,6 +75,8 @@ function NewPost() {
 	const handleFormSubmit = e => {
 		e.preventDefault()
 
+		console.log(newPost)
+
 		let newPostData = new FormData()
 
 		newPostData.append('postText', newPost.postText)
@@ -82,13 +87,15 @@ function NewPost() {
 
 		setNewPost(initialState)
 
-		setModal(false)
+		timeout(setModal(false), 1000)
+
+		setPreview(null)
 	}
 
 	useEffect(() => {
 		dispatch(getAllPosts())
 		dispatch(getUsersPosts(userInfo._id))
-	}, [modal, dispatch, userInfo._id])
+	}, [modal, dispatch, userInfo?._id, isItAnEdit])
 
 	const openModal = e => {
 		e.stopPropagation()
@@ -98,26 +105,61 @@ function NewPost() {
 		setNewPost(initialState)
 
 		setPreview(null)
+
+		setIsItAnEdit(false)
+
+		setIsItaDraft(false)
 	}
 
-	const saveToDrafts = () => {
+	const saveToDrafts = async () => {
+		const [config] = generateUserInfo()
+
 		//Save to drafts do later
+		if (!isItAnEdit && !isItaDraft) {
+			let newDraftData = new FormData()
+
+			newDraftData.append('postText', newPost.postText)
+
+			newDraftData.append('postImgs', newPost.file)
+
+			const res = await axios.post(
+				`${API}/api/users/drafts/${userInfo?._id}`,
+				newDraftData,
+				config
+			)
+
+			if (res) {
+				toast.success('Post saved to drafts')
+			}
+		}
+		setNewPost(initialState)
+		setPreview(null)
 		setModal(false)
+		setIsItAnEdit(false)
+		setIsItaDraft(false)
 	}
 
-	const uploadNewFile = e => {
-		const fileType = e.target.files[0].type
-
-		setUploadFileType(fileType)
-
+	const uploadNewFile = async e => {
 		setPreview(URL.createObjectURL(e.target.files[0]))
 
-		setNewPost(prev => {
-			return {
-				...prev,
-				file: e.target.files[0],
-			}
-		})
+		const newImage = new FormData()
+
+		newImage.append('file', e.target.files[0])
+
+		newImage.append('upload_preset', 'ghxxtmtb')
+
+		const res = await axios.post(`${cloudAPI}`, newImage)
+
+		if (res.status === 200) {
+			toast.success('Image Uploaded')
+
+			setNewPost(prev => {
+				return {
+					...prev,
+					file: res.data.url,
+				}
+			})
+		}
 	}
 
 	const handleUpdatePost = async e => {
@@ -131,17 +173,56 @@ function NewPost() {
 
 		newPostData.append('postText', newPost.postText)
 
-		await axios.put(`${API}/api/posts/${postId}`, newPost, config)
+		newPostData.append('postImgs', newPost.file)
+
+		const res = await axios.put(
+			`${API}/api/posts/${postId}`,
+			newPost,
+			config
+		)
+
+		if (res.status === 200) {
+			toast.success('Post Edited')
+			dispatch(getUsersPosts(userInfo?._id))
+		}
 	}
+
+	const handleDraftSumit = async e => {
+		e.preventDefault()
+
+		let newDraftData = new FormData()
+
+		newDraftData.append('postText', newPost.postText)
+
+		newDraftData.append('postImgs', newPost.file)
+
+		const res = await axios.post(
+			`${API}/api/posts/drafts/${postId}/${userInfo?._id}`,
+			newDraftData,
+			config
+		)
+
+		if (res.status === 200) {
+			toast.success('Draft Posted')
+			dispatch(getUsersPosts(userInfo?._id))
+		}
+
+		setModal(false)
+
+		setIsItaDraft(false)
+	}
+
+	const location = useLocation()
+
+	const isItDrafts = location.pathname === '/drafts'
 
 	return (
 		<StyledNewPost modalShown={modal} preview={preview}>
-			{!modal && (
+			{!modal && !isItDrafts && (
 				<button className='chrip-btn' onClick={openModal}>
 					<MdiFeather />
 				</button>
 			)}
-
 			<section className='new-post-dialog'>
 				<IcBaselineClose
 					className='close-icon'
@@ -156,35 +237,27 @@ function NewPost() {
 						/>
 						<p className='username'>{username}</p>
 					</div>
-					<form
-						className='textarea-wrapper'
-						onSubmit={handleFormSubmit}>
+					<form className='textarea-wrapper'>
 						<textarea
 							placeholder='How are you doing 😋?'
 							onChange={handlePost}
 							value={newPost.postText}
 							maxLength='500'
 						/>
-						{preview &&
-							(uploadfileType.split('/')[0] === 'image' ? (
-								<img
-									src={preview}
-									alt='preview-video'
-									className='preview-img'
-									type={uploadfileType}
-								/>
-							) : (
-								<video controls width='350'>
-									<source src={preview} type={uploadfileType} />
-								</video>
-							))}
+						{preview && (
+							<img
+								src={preview}
+								alt='preview-video'
+								className='preview-img'
+							/>
+						)}
 
 						<div className='call-to-actions'>
 							<label htmlFor='img-vid'>
 								<input
 									id='img-vid'
 									type='file'
-									accept='image/*,video/*'
+									accept='image/*'
 									onChange={uploadNewFile}
 									hidden
 								/>
@@ -201,10 +274,12 @@ function NewPost() {
 								/>
 								<FluentGif16Regular />
 							</label> */}
-							{id === userInfo._id && isItAnEdit ? (
+							{id === userInfo?._id && isItAnEdit ? (
 								<button onClick={handleUpdatePost}>Update</button>
+							) : isItaDraft ? (
+								<button onClick={handleDraftSumit}>Post Draft</button>
 							) : (
-								<button onClick={handleSubmitPost}>Chirp</button>
+								<button onClick={handleFormSubmit}>Chirp</button>
 							)}
 						</div>
 					</form>

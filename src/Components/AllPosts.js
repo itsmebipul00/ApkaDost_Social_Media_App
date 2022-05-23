@@ -13,6 +13,7 @@ import {
 import { Posts } from '../Components'
 
 import { useModal } from '../Providers/ModalProvider'
+import Loader from './Loader'
 
 function AllPosts() {
 	const allPosts = useSelector(state => state?.posts?.allPosts)
@@ -22,6 +23,10 @@ function AllPosts() {
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	const userId = useSelector(state => state?.auth?.user?._id)
+
+	const isAllPostsLoading = useSelector(
+		state => state?.posts?.isLoading
+	)
 
 	const removePostBookMark = useSelector(
 		state => state?.posts?.removePostBookMark
@@ -70,6 +75,7 @@ function AllPosts() {
 
 	return (
 		<Fragment>
+			{isAllPostsLoading && <Loader />}
 			{allPosts
 				.slice(0)
 				.reverse()

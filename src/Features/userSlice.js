@@ -12,6 +12,7 @@ const initialState = {
 	isLoading: false,
 	error: null,
 	userDetails: null,
+	bookmarks: null,
 }
 
 export const authUser = createAsyncThunk(
@@ -29,9 +30,23 @@ export const getUserInfo = createAsyncThunk(
 	async id => await userService.getUserInfo(id)
 )
 
+export const getBookmarks = createAsyncThunk(
+	'user/bookmarks',
+	async id => await userService.getBookmarks(id)
+)
+
 const userSlice = createSlice({
 	name: 'auth',
 	initialState,
+	reducers: {
+		logout: state => {
+			localStorage.removeItem('userInfo')
+			state.isLoggedIn = false
+			state.userDetails = null
+			state.user = null
+			state.bookmarks = null
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(authUser.pending, state => {
@@ -64,7 +79,21 @@ const userSlice = createSlice({
 				state.error = action.payload
 				state.isLoading = false
 			})
+			.addCase(getBookmarks.pending, (state, action) => {
+				state.isLoading = true
+				state.bookmarks = action.payload
+			})
+			.addCase(getBookmarks.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.bookmarks = action.payload
+			})
+			.addCase(getBookmarks.rejected, (state, action) => {
+				state.isLoading = false
+				state.error = action.payload
+			})
 	},
 })
+
+export const { logout } = userSlice.actions
 
 export default userSlice.reducer

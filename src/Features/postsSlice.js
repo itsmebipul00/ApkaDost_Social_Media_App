@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import postsService from '../Services/postsServices'
 
+import toast from 'react-hot-toast'
+
 const sortFromLocalStorage =
 	localStorage.getItem('sortBy') ?? 'newest'
 
@@ -122,6 +124,7 @@ const postsSlice = createSlice({
 			.addCase(likePost.fulfilled, state => {
 				state.isLiked = true
 				state.isLoading = false
+				toast.success('Liked Post')
 			})
 			.addCase(likePost.rejected, state => {
 				state.isLiked = false
@@ -134,6 +137,7 @@ const postsSlice = createSlice({
 			.addCase(unlikePost.fulfilled, state => {
 				state.isUnliked = true
 				state.isLoading = false
+				toast.success('Post Unliked')
 			})
 			.addCase(unlikePost.rejected, state => {
 				state.isUnliked = false
@@ -150,6 +154,7 @@ const postsSlice = createSlice({
 			.addCase(bookmarkPost.fulfilled, state => {
 				state.postBookMarked = true
 				state.isLoading = false
+				toast.success('Added to bookmark')
 			})
 			.addCase(bookmarkPost.rejected, state => {
 				state.postBookMarked = false
@@ -158,14 +163,23 @@ const postsSlice = createSlice({
 			.addCase(removeBookMark.pending, state => {
 				state.removePostBookMark = false
 				state.isLoading = false
+				state.isremovedFromBookmark = false
 			})
 			.addCase(removeBookMark.fulfilled, state => {
 				state.removePostBookMark = true
 				state.isLoading = false
+				state.isremovedFromBookmark = true
+				toast.success('Removed from bookmark')
 			})
 			.addCase(removeBookMark.rejected, state => {
 				state.removePostBookMark = false
 				state.isLoading = false
+				state.isremovedFromBookmark = false
+			})
+			.addCase(createNewPost.fulfilled, state => {
+				state.isNewPostCreated = true
+				state.isLoading = false
+				toast.success('New Post Created')
 			})
 	},
 })

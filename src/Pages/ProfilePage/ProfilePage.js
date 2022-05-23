@@ -10,7 +10,7 @@ import {
 	ZondiconsCloseSolid,
 } from '../../Icones'
 import { useDispatch, useSelector } from 'react-redux'
-import { Posts } from '../../Components'
+import { Loader, Posts } from '../../Components'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import {
@@ -21,6 +21,9 @@ import {
 import { getUserInfo } from '../../Features/userSlice'
 import { likePost, unlikePost } from '../../Features/postsSlice'
 import { useModal } from '../../Providers/ModalProvider'
+import toast from 'react-hot-toast'
+
+import { cloudAPI } from '../../utils/api'
 
 function ProfilePage() {
 	const location = useLocation()
@@ -46,16 +49,26 @@ function ProfilePage() {
 
 	const userInfo = useSelector(state => state?.auth?.userDetails)
 
+	const isUserPostsLoading = useSelector(
+		state => state?.posts?.isLoading
+	)
+
+	const isUserInfoLoading = useSelector(
+		state => state?.auth.isLoading
+	)
+
 	const [showEditModal, setShowEditModal] = useState(false)
 	const [profilePreview, setprofPreview] = useState(null)
 	const [bgPreview, setbgPreview] = useState(null)
 
-	const [editData, setEditData] = useState({
+	const initialState = {
 		username: userInfo?.username,
 		bio: userInfo?.username,
 		profilePic: null,
 		bgImage: null,
-	})
+	}
+
+	const [editData, setEditData] = useState(initialState)
 
 	const dispatch = useDispatch()
 
@@ -87,8 +100,15 @@ function ProfilePage() {
 		dispatch(getUserInfo(id))
 	}
 
+	console.log(userPosts)
+
 	const handleDeletePost = async id => {
-		await axios.delete(`${API}/api/posts/delete/${id}`, config)
+		const res = await axios.delete(
+			`${API}/api/posts/delete/${id}`,
+			config
+		)
+
+		if (res) toast.success('Post deleted')
 
 		dispatch(getUsersPosts(userInfo?._id))
 	}
@@ -129,28 +149,56 @@ function ProfilePage() {
 				bio: userInfo?.bio,
 			}
 		})
+
+		setprofPreview(userInfo?.profilePic)
+
+		setbgPreview(userInfo?.bgImage)
 	}
 
-	const uploadProfilePic = e => {
-		setprofPreview(URL.createObjectURL(e.target.files[0]))
+	const uploadProfilePic = async e => {
+		const newImage = new FormData()
 
-		setEditData(prev => {
-			return {
-				...prev,
-				profilePic: e.target.files[0],
-			}
-		})
+		newImage.append('file', e.target.files[0])
+
+		newImage.append('upload_preset', 'ghxxtmtb')
+
+		const res = await axios.post(`${cloudAPI}`, newImage)
+
+		if (res?.data?.url) {
+			setprofPreview(URL.createObjectURL(e.target.files[0]))
+
+			setEditData(prev => {
+				return {
+					...prev,
+					profilePic: res?.data?.url,
+				}
+			})
+
+			toast.success('Image Uploaded')
+		}
 	}
 
-	const uploadBackgroundImg = e => {
-		setbgPreview(URL.createObjectURL(e.target.files[0]))
+	const uploadBackgroundImg = async e => {
+		const newImage = new FormData()
 
-		setEditData(prev => {
-			return {
-				...prev,
-				bgImage: e.target.files[0],
-			}
-		})
+		newImage.append('file', e.target.files[0])
+
+		newImage.append('upload_preset', 'ghxxtmtb')
+
+		const res = await axios.post(`${cloudAPI}`, newImage)
+
+		if (res?.data?.url) {
+			setbgPreview(URL.createObjectURL(e.target.files[0]))
+
+			setEditData(prev => {
+				return {
+					...prev,
+					bgImage: res?.data?.url,
+				}
+			})
+
+			toast.success('Image Uploaded')
+		}
 	}
 
 	const handleEditForm = e => {
@@ -180,9 +228,15 @@ function ProfilePage() {
 
 		newEditData.append('bio', editData.bio ?? userInfo?.bio)
 
-		newEditData.append('profilePic', editData.profilePic)
+		newEditData.append(
+			'profilePic',
+			editData.profilePic ?? userInfo?.profilePic
+		)
 
-		newEditData.append('bgImage', editData.bgImage)
+		newEditData.append(
+			'bgImage',
+			editData.bgImage ?? userInfo?.bgImage
+		)
 
 		const res = await axios.put(
 			`${API}/api/users/${userInfo?._id}`,
@@ -191,13 +245,65 @@ function ProfilePage() {
 		)
 
 		if (res) dispatch(getUserInfo(id))
+
+		setEditData(initialState)
+	}
+
+	const copyURL = () => {
+		navigator.clipboard.writeText(
+			`${window.location.origin}${location.pathname}`
+		)
+		toast.success('Link copied to clipboard')
+	}
+
+	const handleClose = () => {
+		setEditData(initialState)
+		setShowEditModal(false)
+	}
+
+	const archivePost = async id => {
+		const [config] = generateUserInfo()
+
+		console.log(config)
+
+		const res = await axios.post(
+			`${API}/api/posts/archive/${id}`,
+			{},
+			config
+		)
+
+		if (res) {
+			toast.success('Post archived')
+			dispatch(getUsersPosts(userInfo?._id))
+		}
+	}
+
+	const removeFromArchive = async id => {
+		const [config] = generateUserInfo()
+
+		console.log(config)
+
+		const res = await axios.delete(
+			`${API}/api/posts/archive/${id}`,
+			config
+		)
+
+		if (res) {
+			toast.success('Post unarchived')
+			dispatch(getUsersPosts(userInfo?._id))
+		}
 	}
 
 	return (
 		<StyledProfileSection>
+			{(isUserInfoLoading || isUserPostsLoading) && <Loader />}
 			<div className='profileInfo-wrapper'>
 				<img
-					src={`${randomImgAPI}/800/400`}
+					src={`${
+						userInfo?.bgImage === 'null'
+							? `${randomImgAPI}/800/400`
+							: userInfo?.bgImage
+					}`}
 					alt='user-bgImg'
 					className='user-bgImg'
 				/>
@@ -205,7 +311,11 @@ function ProfilePage() {
 					<div>
 						<div className='profile-pic-wrapper'>
 							<img
-								src={`${window.location.origin}/${userInfo?.profilePic}`}
+								src={`${
+									userInfo?.profilePic === 'null'
+										? `${randomImgAPI}/400/400`
+										: userInfo?.profilePic
+								}`}
 								alt='user-profilePic'
 								className='user-profilePic'
 							/>
@@ -214,13 +324,7 @@ function ProfilePage() {
 						<div className='profile-details'>
 							<p>{userInfo?.username}</p>
 							<p className='user-bio'>{userInfo?.bio}</p>
-							<p
-								className='user-url'
-								onClick={() =>
-									navigator.clipboard.writeText(
-										`${window.location.origin}${location.pathname}`
-									)
-								}>
+							<p className='user-url' onClick={copyURL}>
 								Profile: <span>{userInfo?.username}.nextxt</span>
 							</p>
 							<div className='userDetails-wrapper'>
@@ -273,7 +377,7 @@ function ProfilePage() {
 				<form onSubmit={handleSubmit}>
 					<ZondiconsCloseSolid
 						className='close-icon'
-						onClick={() => setShowEditModal(false)}
+						onClick={handleClose}
 					/>
 					<input
 						placeholder='Username'
@@ -287,43 +391,48 @@ function ProfilePage() {
 						value={editData.bio}
 						onChange={handleEditForm}
 						maxLength='30'></textarea>
-					<label htmlFor='img-vid'>
-						Background:
-						<input
-							id='img-vid'
-							type='file'
-							accept='image/*'
-							onChange={uploadBackgroundImg}
-							hidden
-						/>
-						<DashiconsFormatGallery />
-						{bgPreview && (
-							<img
-								src={bgPreview}
-								alt='preview-img'
-								className='preview-imgs'
-								type='image/*'
+					<div className='user-images'>
+						<label
+							htmlFor='background-pic'
+							className='background-pic'>
+							Background:
+							<input
+								id='background-pic'
+								type='file'
+								accept='image/*'
+								onChange={uploadBackgroundImg}
+								hidden
 							/>
-						)}
-					</label>
-					<label htmlFor='img-vid' className='img-label'>
-						Dp
-						<input
-							id='img-vid'
-							type='file'
-							accept='image/*'
-							onChange={uploadProfilePic}
-							hidden
-						/>
-						<DashiconsFormatGallery />
-						{profilePreview && (
-							<img
-								src={profilePreview}
-								alt='preview-img'
-								className='preview-imgs'
+							<DashiconsFormatGallery />
+							{bgPreview && (
+								<img
+									src={bgPreview}
+									alt='preview-img'
+									className='preview-bgimg'
+									type='image/*'
+								/>
+							)}
+						</label>
+						<label htmlFor='profile-pic' className='profile-pic'>
+							Dp
+							<input
+								id='profile-pic'
+								type='file'
+								accept='image/*'
+								onChange={uploadProfilePic}
+								hidden
 							/>
-						)}
-					</label>
+							<DashiconsFormatGallery />
+							{console.log(profilePreview)}
+							{profilePreview && (
+								<img
+									src={profilePreview}
+									alt='preview-profilePic'
+									className='preview-profilePic'
+								/>
+							)}
+						</label>
+					</div>
 					<button>Edit</button>
 				</form>
 			</StyledEditForm>
@@ -336,6 +445,8 @@ function ProfilePage() {
 						handleLikes={handleLikes}
 						isUserProfile={true}
 						handleDeletePost={handleDeletePost}
+						archivePost={archivePost}
+						removeFromArchive={removeFromArchive}
 						handleBookMarks={handleBookMarks}
 						isUserOnHisProfile={isUserOnHisProfile}
 					/>

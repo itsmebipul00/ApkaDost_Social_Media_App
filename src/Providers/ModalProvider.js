@@ -5,7 +5,7 @@ const ModalContext = createContext()
 const ModalProvider = props => {
 	const initialState = {
 		postText: '',
-		file: null,
+		file: false,
 	}
 	const [isItAnEdit, setIsItAnEdit] = useState(false)
 	const [newPost, setNewPost] = useState(initialState)
@@ -13,11 +13,13 @@ const ModalProvider = props => {
 	const [preview, setPreview] = useState(null)
 	const [uploadfileType, setUploadFileType] = useState('')
 	const [postId, setPostId] = useState('')
-	const [isUpDated, setIsUpdated] = useState(false)
+	const [isItaDraft, setIsItaDraft] = useState(false)
 
 	return (
 		<ModalContext.Provider
 			value={{
+				isItaDraft,
+				setIsItaDraft,
 				modal,
 				setModal,
 				initialState,
@@ -31,8 +33,6 @@ const ModalProvider = props => {
 				setIsItAnEdit,
 				setPostId,
 				postId,
-				setIsUpdated,
-				isUpDated,
 			}}>
 			{props.children}
 		</ModalContext.Provider>

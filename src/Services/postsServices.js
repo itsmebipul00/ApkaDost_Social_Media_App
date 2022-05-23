@@ -9,7 +9,7 @@ const postsService = {
 		const [config, userInfo] = generateUserInfo('formdata')
 		try {
 			const res = await axios.post(
-				`${API}/api/posts/${userInfo._id}`,
+				`${API}/api/posts/${userInfo?._id}`,
 				newPost,
 				config
 			)
@@ -46,7 +46,7 @@ const postsService = {
 		const [config, userInfo] = generateUserInfo()
 		try {
 			const res = await axios.put(
-				`${API}/api/posts/like/${id}/${userInfo._id}`,
+				`${API}/api/posts/like/${id}/${userInfo?._id}`,
 				{},
 				config
 			)
@@ -59,7 +59,7 @@ const postsService = {
 		const [config, userInfo] = generateUserInfo()
 		try {
 			const res = await axios.put(
-				`${API}/api/posts/unlike/${id}/${userInfo._id}`,
+				`${API}/api/posts/unlike/${id}/${userInfo?._id}`,
 				{},
 				config
 			)
@@ -74,7 +74,7 @@ const postsService = {
 
 		try {
 			const res = await axios.put(
-				`${API}/api/posts/bookmark/${postId}/${userInfo._id}`,
+				`${API}/api/posts/bookmark/${postId}/${userInfo?._id}`,
 				{},
 				config
 			)
@@ -89,7 +89,7 @@ const postsService = {
 
 		try {
 			const res = await axios.put(
-				`${API}/api/posts/removeBookmark/${postId}/${userInfo._id}`,
+				`${API}/api/posts/removeBookmark/${postId}/${userInfo?._id}`,
 				{},
 				config
 			)
