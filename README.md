@@ -31,3 +31,5 @@
 - Made using React, Redux toolkit, react-redux and styled-components
 
 Made with 💘 
+
+More features coming soon 🚀
