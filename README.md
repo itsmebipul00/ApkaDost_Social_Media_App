@@ -1,5 +1,5 @@
 # nextxt_frontend
-- 👤admin@exmaple.com  password => 123456
+- 👤admin@example.com  password => 123456
 - Or you could register and onboard
 
 🥘Features included 
