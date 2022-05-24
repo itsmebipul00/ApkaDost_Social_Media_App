@@ -19,4 +19,6 @@
 - Loaders on getting posts from backend
 - Toasts while performing actions on frontend
 - AutoLogin from SignUp, Register and Login simultaneously 
-- 
+- Custom backend: https://github.com/itsmebipul00/nextxt_backend
+
+Made with 💘 
