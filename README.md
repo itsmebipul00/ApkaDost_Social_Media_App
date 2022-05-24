@@ -6,6 +6,7 @@
 - Preview Images while uploading and if it already exists(in cases of edit)
 - *You will have to wait for a sec until a toast 'Uploaded image' pops
 - Like / Unlike
+- Follow / Unfollow (Updates following of current and followers of user that is followed)
 - Comments
 - Edit & delete posts from User Profile
 - User feed (posts of people who you follow)
@@ -21,5 +22,6 @@
 - AutoLogin from SignUp, Register and Login simultaneously 
 - Custom backend: https://github.com/itsmebipul00/nextxt_backend
 - All datas perists everwhere on any action(even on refreshes)
+- Multiple users could use it datas change and persists in refreshes
 
 Made with 💘 
