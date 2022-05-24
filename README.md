@@ -1,4 +1,6 @@
 # nextxt_frontend
+- 👤admin@exmaple.com  password => 123456
+- Or you could register and onboard
 🥘Features included 
 - Create a Post from many screens
 - Upload Images while creating posts, while saving posts from drafts, while editing post, while editing profile
