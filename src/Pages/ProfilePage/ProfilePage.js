@@ -294,7 +294,8 @@ function ProfilePage() {
 			<div className='profileInfo-wrapper'>
 				<img
 					src={`${
-						userInfo?.bgImage === 'null'
+						userInfo?.bgImage === 'null' ||
+						userInfo?.bgImage === undefined
 							? `${randomImgAPI}/800/400`
 							: userInfo?.bgImage
 					}`}
@@ -306,7 +307,8 @@ function ProfilePage() {
 						<div className='profile-pic-wrapper'>
 							<img
 								src={`${
-									userInfo?.profilePic === 'null'
+									userInfo?.profilePic === 'null' ||
+									userInfo?.profilePic === undefined
 										? `${randomImgAPI}/400/400`
 										: userInfo?.profilePic
 								}`}
