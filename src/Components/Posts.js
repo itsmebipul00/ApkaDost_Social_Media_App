@@ -2,7 +2,8 @@ import {
 	MdiCardsHeartOutline,
 	MdiCommentMultipleOutline,
 	PhShareNetwork,
-	MaterialSymbolsArchiveOutline,
+	MdiArchivePlus,
+	MdiArchiveRemove,
 	CarbonBookmarkAdd,
 	IcOutlineModeEdit,
 	MaterialSymbolsDeleteOutline,
@@ -12,12 +13,16 @@ import {
 
 import { StyledPost } from '../Components'
 
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { generateUserInfo } from '../utils/generateUserInfo'
 
 import { useModal } from '../Providers/ModalProvider'
 
 import { Fragment } from 'react'
+
+import { randomImgAPI } from '../utils/api'
+
+import toast from 'react-hot-toast'
 
 const Posts = props => {
 	const {
@@ -26,13 +31,22 @@ const Posts = props => {
 		isPostPage,
 		handleDeletePost,
 		handleBookMarks,
-		isUserOnHisProfile,
+		archivePost,
+		removeFromArchive,
+		isItDraftPage,
+		handleDraft,
+		deleteDraft,
 	} = props
 
 	const navigate = useNavigate()
 
-	const { setModal, setNewPost, setIsItAnEdit, setPostId } =
-		useModal()
+	const {
+		setModal,
+		setNewPost,
+		setIsItAnEdit,
+		setPostId,
+		setPreview,
+	} = useModal()
 
 	// eslint-disable-next-line no-unused-vars
 	const [config, userInfo] = generateUserInfo()
@@ -45,20 +59,37 @@ const Posts = props => {
 	const handleEdit = content => {
 		setModal(true)
 		setIsItAnEdit(true)
+		setPreview(content?.image)
 		setPostId(post?._id)
 		setNewPost(prev => {
 			return {
 				...prev,
-				postText: content.text,
+				postText: content?.text,
+				file: content?.image,
 			}
 		})
 	}
+
+	const copyLink = () => {
+		navigator.clipboard.writeText(
+			`${window.location.origin}/post/${post?._id}`
+		)
+		toast.success('Link Copied')
+	}
+	const location = useLocation()
+
+	const isItUsersProfile =
+		`${location.pathname}` === `/user/${userInfo?._id}`
 
 	return (
 		<StyledPost>
 			<div className='dp-wrapper'>
 				<img
-					src={`${window.location.origin}/${post?.user?.profilePic}`}
+					src={`${
+						post?.user?.profilePic === 'null'
+							? `${randomImgAPI}/400/400`
+							: post?.user?.profilePic
+					}`}
 					alt='user-dp'
 					className='profile-dp'
 				/>
@@ -83,56 +114,74 @@ const Posts = props => {
 					</span>
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
-
-				{!isPostPage && (
-					<span
-						className='cta-btns'
-						onClick={e => e.stopPropagation()}>
-						<span className='heart'>
-							<MdiCardsHeartOutline
-								onClick={() => handleLikes(post?._id)}
-							/>
-							{post?.likes?.length}
-						</span>
-
-						<span className='comments'>
-							<MdiCommentMultipleOutline
-								onClick={() => navigate(`/post/${post?._id}`)}
-							/>
-							{post?.comments?.length}
-						</span>
-
-						<PhShareNetwork
-							onClick={() =>
-								navigator.clipboard.writeText(
-									`${window.location.origin}/post/${post?._id}`
-								)
-							}
+				{post?.content?.image !== 'false' &&
+					post?.content?.image !== undefined && (
+						<img
+							src={post?.content?.image}
+							alt={`${post?.username}-post`}
+							className='post-img'
 						/>
-						<MaterialSymbolsArchiveOutline />
+					)}
 
-						{post?.bookmarks?.includes(userInfo._id) ? (
-							<IcSharpBookmarkRemove
-								onClick={() => handleBookMarks(post?._id)}
-							/>
-						) : (
-							<CarbonBookmarkAdd
-								onClick={() => handleBookMarks(post?._id)}
-							/>
-						)}
+				<span className='cta-btns' onClick={e => e.stopPropagation()}>
+					{!isPostPage && !isItDraftPage && (
+						<Fragment>
+							<span className='heart'>
+								<MdiCardsHeartOutline
+									onClick={() => handleLikes(post?._id)}
+								/>
+								{post?.likes?.length}
+							</span>
 
-						{isUserOnHisProfile && (
-							<Fragment>
-								<IcOutlineModeEdit
-									onClick={() => handleEdit(post?.content)}
+							<span className='comments'>
+								<MdiCommentMultipleOutline
+									onClick={() => navigate(`/post/${post?._id}`)}
 								/>
-								<MaterialSymbolsDeleteOutline
-									onClick={() => handleDeletePost(post?._id)}
+								{post?.comments?.length}
+							</span>
+
+							<PhShareNetwork onClick={copyLink} />
+
+							{post?.bookmarks?.includes(userInfo._id) ? (
+								<IcSharpBookmarkRemove
+									onClick={() => handleBookMarks(post?._id)}
 								/>
-							</Fragment>
-						)}
-					</span>
-				)}
+							) : (
+								<CarbonBookmarkAdd
+									onClick={() => handleBookMarks(post?._id)}
+								/>
+							)}
+
+							{isItUsersProfile && (
+								<Fragment>
+									<IcOutlineModeEdit
+										onClick={() => handleEdit(post?.content)}
+									/>
+									<MaterialSymbolsDeleteOutline
+										onClick={() => handleDeletePost(post?._id)}
+									/>
+									{post?.archived ? (
+										<MdiArchiveRemove
+											onClick={() => removeFromArchive(post?._id)}
+										/>
+									) : (
+										<MdiArchivePlus
+											onClick={() => archivePost(post?._id)}
+										/>
+									)}
+								</Fragment>
+							)}
+						</Fragment>
+					)}
+					{isItDraftPage && (
+						<Fragment>
+							<IcOutlineModeEdit onClick={() => handleDraft(post)} />
+							<MaterialSymbolsDeleteOutline
+								onClick={() => deleteDraft(post?._id)}
+							/>
+						</Fragment>
+					)}
+				</span>
 			</div>
 		</StyledPost>
 	)

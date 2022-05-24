@@ -12,9 +12,13 @@ import {
 	HomePage,
 	ProfilePage,
 	PostPage,
+	BookmarkPage,
+	DraftPage,
 } from './Pages'
 
 import { ThemeProvider } from 'styled-components'
+
+import { Toaster } from 'react-hot-toast'
 
 import { useSelector } from 'react-redux'
 
@@ -30,8 +34,9 @@ function App() {
 	return (
 		<ThemeProvider theme={{ globalTheme }}>
 			<BrowserRouter basename='/'>
-				<GlobalStyles />
+				<Toaster position='bottom-left' reverseOrder={false} />
 
+				<GlobalStyles />
 				<ScrollToTop>
 					<Routes>
 						<Route element={<ProtectedRoute />}>
@@ -42,6 +47,8 @@ function App() {
 							<Route path='/' element={<HomePage />} />
 							<Route path='/explore' element={<ExplorePage />} />
 							<Route path='/post/:id' element={<PostPage />} />
+							<Route path='/bookmarks' element={<BookmarkPage />} />
+							<Route path='/drafts' element={<DraftPage />} />
 						</Route>
 					</Routes>
 				</ScrollToTop>

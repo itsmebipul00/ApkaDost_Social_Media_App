@@ -57,6 +57,29 @@ export const StyledEditForm = styled.div`
 			border: 3px solid var(--black);
 			color: var(--black);
 		}
+		.user-images {
+			display: flex;
+			flex-direction: column;
+			@media (min-width: 60em) {
+				flex-direction: row;
+			}
+			justify-content: space-between;
+		}
+		.preview-profilePic,
+		.preview-bgimg {
+			margin-left: 1rem;
+			width: 4rem;
+			@media (min-width: 40em) {
+				width: 8rem;
+			}
+			aspect-ratio: 1;
+		}
+		.background-pic,
+		.profile-pic {
+			margin-right: 1rem;
+			display: flex;
+			flex-direction: column;
+		}
 		textarea {
 			padding: 1rem;
 			height: 15vw;
@@ -78,7 +101,7 @@ export const StyledEditForm = styled.div`
 			padding: 0.5rem 1.5rem;
 			color: var(--black);
 			cursor: pointer;
-			margin-top: 0;
+			margin-top: 2rem;
 		}
 		button:hover {
 			color: var(--blue);

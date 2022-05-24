@@ -13,15 +13,15 @@ export const StyledNavigation = styled.nav`
 	padding-top: 6vh;
 	margin-top: 2rem;
 	& > * {
-		margin: 2rem;
+		margin: 1.25rem;
 	}
 
 	& svg > * {
 		display: inline-block;
 		color: var(--black);
 		margin-left: 1rem;
-		width: 1rem;
-		height: 1rem;
+		width: 1.5rem;
+		height: 1.5rem;
 	}
 
 	a {

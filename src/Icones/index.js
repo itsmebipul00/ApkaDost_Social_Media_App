@@ -262,3 +262,33 @@ export function ZondiconsCloseSolid(props) {
 		</svg>
 	)
 }
+
+export function MaterialSymbolsDrafts(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='m12 1l9.05 5.4q.45.275.7.75q.25.475.25 1V19q0 .825-.587 1.413Q20.825 21 20 21H4q-.825 0-1.412-.587Q2 19.825 2 19V8.15q0-.525.25-1t.7-.75Zm0 11.65L19.8 8L12 3.35L4.2 8Z'></path>
+		</svg>
+	)
+}
+
+export function MdiArchivePlus(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M21 7H3V3h18v4m-8 12c0 .7.13 1.37.35 2H4V8h16v5.09c-.33-.05-.66-.09-1-.09c-3.31 0-6 2.69-6 6m2-6v-1.5c0-.28-.22-.5-.5-.5h-5c-.28 0-.5.22-.5.5V13h6m5 5v-3h-2v3h-3v2h3v3h2v-3h3v-2h-3Z'></path>
+		</svg>
+	)
+}
+
+export function MdiArchiveRemove(props) {
+	return (
+		<svg width='1em' height='1em' viewBox='0 0 24 24' {...props}>
+			<path
+				fill='currentColor'
+				d='M21 7H3V3h18v4m-8 12c0 .7.13 1.37.35 2H4V8h16v5.09c-.33-.05-.66-.09-1-.09c-3.31 0-6 2.69-6 6m2-6v-1.5c0-.28-.22-.5-.5-.5h-5c-.28 0-.5.22-.5.5V13h6m7.54 3.88l-1.42-1.41L19 17.59l-2.12-2.12l-1.41 1.41L17.59 19l-2.12 2.12l1.41 1.42L19 20.41l2.12 2.13l1.42-1.42L20.41 19l2.13-2.12Z'></path>
+		</svg>
+	)
+}

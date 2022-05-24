@@ -13,6 +13,7 @@ import {
 import { Posts } from '../Components'
 
 import { useModal } from '../Providers/ModalProvider'
+import Loader from './Loader'
 
 function AllPosts() {
 	const allPosts = useSelector(state => state?.posts?.allPosts)
@@ -22,6 +23,12 @@ function AllPosts() {
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	const userId = useSelector(state => state?.auth?.user?._id)
+
+	const pageNo = useSelector(state => state?.posts?.pageNo)
+
+	const isAllPostsLoading = useSelector(
+		state => state?.posts?.isLoading
+	)
 
 	const removePostBookMark = useSelector(
 		state => state?.posts?.removePostBookMark
@@ -36,7 +43,7 @@ function AllPosts() {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getAllPosts())
+		dispatch(getAllPosts(pageNo))
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		modal,
@@ -58,7 +65,7 @@ function AllPosts() {
 	}
 
 	const handleBookMarks = id => {
-		const post = allPosts.find(post => post._id === id)
+		const post = allPosts?.find(post => post._id === id)
 		const isInBookMark = post?.bookmarks?.includes(userId)
 
 		if (!isInBookMark) {
@@ -70,6 +77,7 @@ function AllPosts() {
 
 	return (
 		<Fragment>
+			{isAllPostsLoading && <Loader />}
 			{allPosts
 				.slice(0)
 				.reverse()

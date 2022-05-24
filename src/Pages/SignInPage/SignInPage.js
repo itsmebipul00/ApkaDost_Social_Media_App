@@ -45,6 +45,7 @@ function SignInPage() {
 
 	return (
 		<StyledForm onSubmit={handleSubmit}>
+			<h3>SignIn/SignUp</h3>
 			<Input
 				type='email'
 				placeholder='Enter Email'

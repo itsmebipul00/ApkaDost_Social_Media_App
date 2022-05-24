@@ -6,18 +6,17 @@ import {
 } from '../../Features/postsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Fragment, useEffect } from 'react'
-import { Posts } from '../../Components'
+import { Posts, Loader } from '../../Components'
 import { useLocalStorage } from '../../Hooks'
 import {
 	likePost,
 	unlikePost,
 	sortByTrending,
 	sortByRecent,
-
-	// resetFilters,
 } from '../../Features/postsSlice'
 
 import { StyledFilters } from './styles/Filters.styled'
+import toast from 'react-hot-toast'
 function HomePage() {
 	const userId = useSelector(state => state?.auth?.user?._id)
 
@@ -28,6 +27,10 @@ function HomePage() {
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	const sortBy = useSelector(state => state?.posts?.sortBy)
+
+	const isUserPostLoading = useSelector(
+		state => state?.posts?.isLoading
+	)
 
 	const dispatch = useDispatch()
 
@@ -69,13 +72,16 @@ function HomePage() {
 		setSortBy(value)
 		if (value === 'trending') {
 			dispatch(sortByTrending())
+			toast.success('Sorted by Trending')
 		} else {
 			dispatch(sortByRecent())
+			toast.success('Sorted by Recent')
 		}
 	}
 
 	return (
 		<Fragment>
+			{isUserPostLoading && <Loader />}
 			<StyledFilters role='list'>
 				<label htmlFor='newest'>
 					<input

@@ -7,7 +7,7 @@ export const StyledReplyBox = styled.section`
 	gap: 1rem;
 	padding: 0 1.5rem;
 	@media (min-width: 40rem) {
-		padding: 0 3rem;
+		padding: 0 3rem 1rem 3rem;
 	}
 
 	.round-dp {

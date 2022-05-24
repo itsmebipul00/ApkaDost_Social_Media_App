@@ -1,0 +1,1 @@
+lazy load posts, infinite scroll, chat, fixing layout shifts
