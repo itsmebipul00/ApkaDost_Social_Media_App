@@ -109,12 +109,7 @@ function NewPost() {
 		const [config] = generateUserInfo()
 
 		//Save to drafts do later
-		if (
-			!isItAnEdit &&
-			!isItaDraft &&
-			newPost.postText &&
-			newPost.file
-		) {
+		if (!isItAnEdit && !isItaDraft) {
 			let newDraftData = new FormData()
 
 			newDraftData.append('postText', newPost.postText)

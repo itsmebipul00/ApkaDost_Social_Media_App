@@ -79,7 +79,7 @@ const Posts = props => {
 	const location = useLocation()
 
 	const isItUsersProfile =
-		`${location.pathname}` === `/user/${userInfo._id}`
+		`${location.pathname}` === `/user/${userInfo?._id}`
 
 	return (
 		<StyledPost>
