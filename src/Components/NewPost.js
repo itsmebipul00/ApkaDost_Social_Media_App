@@ -30,8 +30,6 @@ import { timeout } from '../utils/timeout'
 import toast from 'react-hot-toast'
 
 function NewPost() {
-	//add img source later in backed db
-	// const location = useLocation()
 	const { id } = useParams()
 
 	const user = useSelector(state => state.auth.user)

@@ -99,21 +99,6 @@ const postsService = {
 		}
 	},
 
-	//Later
-	// draftPost: async newPost => {
-	// 	const config = generateUserInfo()
-
-	// 	try {
-	// 		const res = await axios.post(
-	// 			`${API}/api/posts/draft/${userInfo._id}`,
-	// 			newPost,
-	// 			config
-	// 		)
-	// 		return res.data
-	// 	} catch (error) {
-	// 		throw error
-	// 	}
-	// },
 	getAllPosts: async pgNumber => {
 		const [config] = generateUserInfo()
 

@@ -13,8 +13,6 @@ import {
 	unlikePost,
 	sortByTrending,
 	sortByRecent,
-
-	// resetFilters,
 } from '../../Features/postsSlice'
 
 import { StyledFilters } from './styles/Filters.styled'
