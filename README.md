@@ -28,4 +28,6 @@
 - Multiple users could use it datas change and persists in refreshes
 - Responsive
 
+- Made using React, Redux toolkit, react-redux and styled-components
+
 Made with 💘 
