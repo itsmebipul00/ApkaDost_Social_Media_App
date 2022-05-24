@@ -100,8 +100,6 @@ function ProfilePage() {
 		dispatch(getUserInfo(id))
 	}
 
-	console.log(userPosts)
-
 	const handleDeletePost = async id => {
 		const res = await axios.delete(
 			`${API}/api/posts/delete/${id}`,
@@ -264,8 +262,6 @@ function ProfilePage() {
 	const archivePost = async id => {
 		const [config] = generateUserInfo()
 
-		console.log(config)
-
 		const res = await axios.post(
 			`${API}/api/posts/archive/${id}`,
 			{},
@@ -280,8 +276,6 @@ function ProfilePage() {
 
 	const removeFromArchive = async id => {
 		const [config] = generateUserInfo()
-
-		console.log(config)
 
 		const res = await axios.delete(
 			`${API}/api/posts/archive/${id}`,
@@ -423,7 +417,6 @@ function ProfilePage() {
 								hidden
 							/>
 							<DashiconsFormatGallery />
-							{console.log(profilePreview)}
 							{profilePreview && (
 								<img
 									src={profilePreview}

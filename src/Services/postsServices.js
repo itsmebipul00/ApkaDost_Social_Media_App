@@ -114,11 +114,14 @@ const postsService = {
 	// 		throw error
 	// 	}
 	// },
-	getAllPosts: async () => {
+	getAllPosts: async pgNumber => {
 		const [config] = generateUserInfo()
 
 		try {
-			const res = await axios.get(`${API}/api/posts/`, config)
+			const res = await axios.get(
+				`${API}/api/posts?pgNumber=${pgNumber}`,
+				config
+			)
 			return res.data
 		} catch (error) {
 			throw error

@@ -36,8 +36,6 @@ function HomePage() {
 
 	const dispatch = useDispatch()
 
-	console.log(isUserPostLoading)
-
 	useEffect(() => {
 		dispatch(getUserFeed(userId))
 		dispatch(getUsersPosts(userId))

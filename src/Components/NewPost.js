@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from 'react'
+import { useEffect } from 'react'
 
 import {
 	createNewPost,
@@ -36,10 +36,6 @@ function NewPost() {
 
 	const user = useSelector(state => state.auth.user)
 
-	const isNewPostCreated = useSelector(
-		state => state?.posts?.isNewPostCreated
-	)
-
 	const [config, userInfo] = generateUserInfo('formdata')
 
 	const {
@@ -74,8 +70,6 @@ function NewPost() {
 
 	const handleFormSubmit = e => {
 		e.preventDefault()
-
-		console.log(newPost)
 
 		let newPostData = new FormData()
 
@@ -115,7 +109,12 @@ function NewPost() {
 		const [config] = generateUserInfo()
 
 		//Save to drafts do later
-		if (!isItAnEdit && !isItaDraft) {
+		if (
+			!isItAnEdit &&
+			!isItaDraft &&
+			newPost.postText &&
+			newPost.file
+		) {
 			let newDraftData = new FormData()
 
 			newDraftData.append('postText', newPost.postText)
@@ -244,7 +243,7 @@ function NewPost() {
 							value={newPost.postText}
 							maxLength='500'
 						/>
-						{preview && (
+						{preview && preview !== 'false' && (
 							<img
 								src={preview}
 								alt='preview-video'
@@ -263,17 +262,7 @@ function NewPost() {
 								/>
 								<DashiconsFormatGallery />
 							</label>
-							{/* <label htmlFor='gif'>
-								<input
-									id='gif'
-									type='file'
-									accept='image/gif'
-									onChange={handleMedia}
-									disabled={!!postGif ? true : false}
-									hidden
-								/>
-								<FluentGif16Regular />
-							</label> */}
+
 							{id === userInfo?._id && isItAnEdit ? (
 								<button onClick={handleUpdatePost}>Update</button>
 							) : isItaDraft ? (

@@ -32,8 +32,6 @@ const Bookmarks = () => {
 		state => state?.auth.isLoading
 	)
 
-	console.log(isremovedFromBookmark)
-
 	const dispatch = useDispatch()
 
 	useEffect(() => {

@@ -15,6 +15,8 @@ const initialState = {
 	userFeed: [],
 	post: [],
 	sortBy: sortFromLocalStorage,
+	pageNo: 1,
+	totalPages: null,
 }
 
 export const createNewPost = createAsyncThunk(
@@ -24,7 +26,7 @@ export const createNewPost = createAsyncThunk(
 
 export const getAllPosts = createAsyncThunk(
 	'posts/allPosts',
-	async () => await postsService.getAllPosts()
+	async pgNumber => await postsService.getAllPosts(pgNumber)
 )
 
 export const likePost = createAsyncThunk(
@@ -88,7 +90,9 @@ const postsSlice = createSlice({
 				state.isLoading = true
 			})
 			.addCase(getAllPosts.fulfilled, (state, action) => {
-				state.allPosts = action.payload
+				state.totalPages = action.payload.slice(-2)[0]
+				state.pageNo = action.payload.slice(-2)[1]
+				state.allPosts = action.payload.slice(0, -2)
 				state.isLoading = false
 			})
 			.addCase(getAllPosts.rejected, (state, action) => {

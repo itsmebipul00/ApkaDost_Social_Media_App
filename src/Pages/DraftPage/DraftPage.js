@@ -37,7 +37,6 @@ const DraftsPage = () => {
 	}, [isItaDraft])
 
 	const handleDraft = post => {
-		console.log(post)
 		setModal(true)
 		setIsItaDraft(true)
 		setPreview(post?.content?.image)

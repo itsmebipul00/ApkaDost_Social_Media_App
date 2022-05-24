@@ -57,7 +57,6 @@ const Posts = props => {
 	}
 
 	const handleEdit = content => {
-		console.log(content)
 		setModal(true)
 		setIsItAnEdit(true)
 		setPreview(content?.image)
@@ -81,8 +80,6 @@ const Posts = props => {
 
 	const isItUsersProfile =
 		`${location.pathname}` === `/user/${userInfo._id}`
-
-	console.log(`/user/${userInfo._id}`, `${location.pathname}`)
 
 	return (
 		<StyledPost>
@@ -117,13 +114,14 @@ const Posts = props => {
 					</span>
 				</span>
 				<p className='post-content'>{post?.content?.text}</p>
-				{post?.content?.image !== 'false' && (
-					<img
-						src={post?.content?.image}
-						alt={`${post?.username}-post`}
-						className='post-img'
-					/>
-				)}
+				{post?.content?.image !== 'false' &&
+					post?.content?.image !== undefined && (
+						<img
+							src={post?.content?.image}
+							alt={`${post?.username}-post`}
+							className='post-img'
+						/>
+					)}
 
 				<span className='cta-btns' onClick={e => e.stopPropagation()}>
 					{!isPostPage && !isItDraftPage && (
