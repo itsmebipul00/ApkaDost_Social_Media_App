@@ -20,6 +20,6 @@
 - Toasts while performing actions on frontend
 - AutoLogin from SignUp, Register and Login simultaneously 
 - Custom backend: https://github.com/itsmebipul00/nextxt_backend
-- All datas perists(on refreshes)
+- All datas perists everwhere on any action(even on refreshes)
 
 Made with 💘 
