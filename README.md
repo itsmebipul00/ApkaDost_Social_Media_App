@@ -23,5 +23,6 @@
 - Custom backend: https://github.com/itsmebipul00/nextxt_backend
 - All datas perists everwhere on any action(even on refreshes)
 - Multiple users could use it datas change and persists in refreshes
+- Responsive
 
 Made with 💘 
