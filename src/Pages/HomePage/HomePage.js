@@ -15,8 +15,11 @@ import {
 	sortByRecent,
 } from '../../Features/postsSlice'
 
+import { StyledHomePage } from './HomePage.styled'
+
 import { StyledFilters } from './styles/Filters.styled'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 function HomePage() {
 	const userId = useSelector(state => state?.auth?.user?._id)
 
@@ -79,44 +82,68 @@ function HomePage() {
 		}
 	}
 
+	const navigate = useNavigate()
+
 	return (
 		<Fragment>
 			{isUserPostLoading && <Loader />}
-			<StyledFilters role='list'>
-				<label htmlFor='newest'>
-					<input
-						type='radio'
-						id='newest'
-						value='newest'
-						className='radio'
-						name='sort'
-						checked={sortBy === 'newest'}
-						onChange={e => selectSortBy(e.target.value)}
-					/>
-					<span className='text'>Recent</span>
-				</label>
+			{userFeed.length > 0 && (
+				<StyledFilters role='list'>
+					<label htmlFor='newest'>
+						<input
+							type='radio'
+							id='newest'
+							value='newest'
+							className='radio'
+							name='sort'
+							checked={sortBy === 'newest'}
+							onChange={e => selectSortBy(e.target.value)}
+						/>
+						<span className='text'>Recent</span>
+					</label>
 
-				<label htmlFor='trending'>
-					<input
-						type='radio'
-						id='trending'
-						value='trending'
-						className='radio'
-						name='sort'
-						checked={sortBy === 'trending'}
-						onChange={e => selectSortBy(e.target.value)}
+					<label htmlFor='trending'>
+						<input
+							type='radio'
+							id='trending'
+							value='trending'
+							className='radio'
+							name='sort'
+							checked={sortBy === 'trending'}
+							onChange={e => selectSortBy(e.target.value)}
+						/>
+						<span className='text'>Trending</span>
+					</label>
+				</StyledFilters>
+			)}
+
+			{userFeed.length > 0 ? (
+				userFeed.map((post, key) => (
+					<Posts
+						post={post}
+						key={key}
+						handleLikes={handleLikes}
+						handleBookMarks={handleBookMarks}
 					/>
-					<span className='text'>Trending</span>
-				</label>
-			</StyledFilters>
-			{userFeed.map((post, key) => (
-				<Posts
-					post={post}
-					key={key}
-					handleLikes={handleLikes}
-					handleBookMarks={handleBookMarks}
-				/>
-			))}
+				))
+			) : (
+				<StyledHomePage>
+					<img
+						src={`${window.location.origin}/images/empty-feed.png`}
+						alt='empty-feed'
+						className='empty-feed'
+					/>
+					<p className='empty-feed-text'>
+						Explore or search your friends to follow them and get them
+						on your feed
+					</p>
+					<button
+						className='btn-explore'
+						onClick={() => navigate('/explore')}>
+						Explore
+					</button>
+				</StyledHomePage>
+			)}
 		</Fragment>
 	)
 }

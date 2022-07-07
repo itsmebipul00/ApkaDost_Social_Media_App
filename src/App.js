@@ -14,6 +14,7 @@ import {
 	PostPage,
 	BookmarkPage,
 	DraftPage,
+	NotFoundPage,
 } from './Pages'
 
 import { ThemeProvider } from 'styled-components'
@@ -35,7 +36,6 @@ function App() {
 		<ThemeProvider theme={{ globalTheme }}>
 			<BrowserRouter basename='/'>
 				<Toaster position='bottom-left' reverseOrder={false} />
-
 				<GlobalStyles />
 				<ScrollToTop>
 					<Routes>
@@ -50,6 +50,7 @@ function App() {
 							<Route path='/bookmarks' element={<BookmarkPage />} />
 							<Route path='/drafts' element={<DraftPage />} />
 						</Route>
+						<Route path='*' element={<NotFoundPage />} />
 					</Routes>
 				</ScrollToTop>
 			</BrowserRouter>

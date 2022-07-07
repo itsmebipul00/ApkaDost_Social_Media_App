@@ -16,8 +16,6 @@ import { StyledNewPost } from '../Components'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { randomImgAPI } from '../utils/api'
-
 import { useModal } from '../Providers/ModalProvider'
 import { useLocation, useParams } from 'react-router-dom'
 import { generateUserInfo } from '../utils/generateUserInfo'
@@ -33,6 +31,8 @@ function NewPost() {
 	const { id } = useParams()
 
 	const user = useSelector(state => state.auth.user)
+
+	const userDetails = useSelector(state => state?.auth?.userDetails)
 
 	const [config, userInfo] = generateUserInfo('formdata')
 
@@ -51,9 +51,11 @@ function NewPost() {
 		setIsItaDraft,
 	} = useModal()
 
-	const { dp, username } = user
+	const { username } = user
 
-	const imgSrc = !!dp ? dp : randomImgAPI
+	const imgSrc = !userDetails?.profilePic
+		? `${window.location.origin}/images/no-dp.webp`
+		: userDetails?.profilePic
 
 	const dispatch = useDispatch()
 
@@ -104,6 +106,15 @@ function NewPost() {
 	}
 
 	const saveToDrafts = async () => {
+		if (!newPost.postText && !newPost.file) {
+			setNewPost(initialState)
+			setPreview(null)
+			setModal(false)
+			setIsItAnEdit(false)
+			setIsItaDraft(false)
+			return
+		}
+
 		const [config] = generateUserInfo()
 
 		//Save to drafts do later

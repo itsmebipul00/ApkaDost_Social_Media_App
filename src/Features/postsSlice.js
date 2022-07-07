@@ -90,9 +90,7 @@ const postsSlice = createSlice({
 				state.isLoading = true
 			})
 			.addCase(getAllPosts.fulfilled, (state, action) => {
-				state.totalPages = action.payload.slice(-2)[0]
-				state.pageNo = action.payload.slice(-2)[1]
-				state.allPosts = action.payload.slice(0, -2)
+				state.allPosts = action.payload
 				state.isLoading = false
 			})
 			.addCase(getAllPosts.rejected, (state, action) => {

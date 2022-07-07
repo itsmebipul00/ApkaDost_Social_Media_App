@@ -46,6 +46,15 @@ const userService = {
 			throw error
 		}
 	},
+	getUsers: async () => {
+		const [config] = generateUserInfo()
+		try {
+			const res = await axios.get(`${API}/api/users`, config)
+			return res.data
+		} catch (error) {
+			throw error
+		}
+	},
 }
 
 export default userService

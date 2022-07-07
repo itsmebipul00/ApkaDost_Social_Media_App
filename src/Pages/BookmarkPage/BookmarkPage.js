@@ -1,3 +1,4 @@
+import { StyleBookmarks } from './BookmarkPage.styled'
 import { useEffect, Fragment } from 'react'
 import { Loader, Posts } from '../../Components'
 
@@ -11,6 +12,7 @@ import {
 } from '../../Features/postsSlice'
 
 import { getBookmarks } from '../../Features/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Bookmarks = () => {
 	// eslint-disable-next-line no-unused-vars
@@ -60,17 +62,38 @@ const Bookmarks = () => {
 		dispatch(removeBookMark(id))
 	}
 
+	const navigate = useNavigate()
+
 	return (
 		<Fragment>
 			{isBookmarksLoading && <Loader />}
-			{bookmarks?.map((book, key) => (
-				<Posts
-					post={book}
-					key={key}
-					handleLikes={handleLikes}
-					handleBookMarks={handleBookMarks}
-				/>
-			))}
+			{bookmarks?.length > 0 ? (
+				bookmarks?.map((book, key) => (
+					<Posts
+						post={book}
+						key={key}
+						handleLikes={handleLikes}
+						handleBookMarks={handleBookMarks}
+					/>
+				))
+			) : (
+				<StyleBookmarks className='no-bookmark'>
+					<img
+						src={`${window.location.origin}/images/empty-bookmark.png`}
+						alt='no-bookmark'
+						className='empty-feed'
+					/>
+					<p className='empty-feed-text'>
+						Bookmark your favourite posts and read them again from
+						here
+					</p>
+					<button
+						className='btn-explore'
+						onClick={() => navigate('/explore')}>
+						Explore
+					</button>
+				</StyleBookmarks>
+			)}
 		</Fragment>
 	)
 }

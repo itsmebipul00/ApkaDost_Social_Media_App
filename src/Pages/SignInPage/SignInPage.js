@@ -6,8 +6,6 @@ import { StyledForm } from './styles/Form.styled'
 
 import { StyledPasswordInput } from '../../Components'
 
-import { Link } from 'react-router-dom'
-
 import { authUser } from '../../Features/userSlice'
 import { useDispatch } from 'react-redux'
 
@@ -42,10 +40,17 @@ function SignInPage() {
 			remember: false,
 		})
 	}
+	const fillGuestDetails = e => {
+		e.preventDefault()
+		setFormData({
+			email: 'admin@example.com',
+			password: '123456',
+		})
+	}
 
 	return (
 		<StyledForm onSubmit={handleSubmit}>
-			<h3>SignIn/SignUp</h3>
+			<h3 className='login-header'>Apka Dost</h3>
 			<Input
 				type='email'
 				placeholder='Enter Email'
@@ -67,20 +72,8 @@ function SignInPage() {
 				/>
 			</StyledPasswordInput>
 
-			<span className='span-flex'>
-				<Input
-					type='checkbox'
-					required={true}
-					id='remember'
-					name='remember'
-					value={formData.remember}
-					onChange={handleInput}
-					labelText='Remember me'
-				/>
-				<Link to='/'>Forgot Password ? </Link>
-			</span>
-
-			<Button>NEXTXT</Button>
+			<Button onClick={handleSubmit}>Login</Button>
+			<Button onClick={fillGuestDetails}>Guest Credentials</Button>
 		</StyledForm>
 	)
 }

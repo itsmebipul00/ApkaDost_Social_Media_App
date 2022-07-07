@@ -13,6 +13,7 @@ import {
 import { Posts } from '../Components'
 
 import { useModal } from '../Providers/ModalProvider'
+
 import Loader from './Loader'
 
 function AllPosts() {
@@ -23,8 +24,6 @@ function AllPosts() {
 	const isUnliked = useSelector(state => state?.posts?.isUnliked)
 
 	const userId = useSelector(state => state?.auth?.user?._id)
-
-	const pageNo = useSelector(state => state?.posts?.pageNo)
 
 	const isAllPostsLoading = useSelector(
 		state => state?.posts?.isLoading
@@ -43,7 +42,7 @@ function AllPosts() {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getAllPosts(pageNo))
+		dispatch(getAllPosts())
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		modal,

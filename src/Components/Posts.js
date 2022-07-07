@@ -1,5 +1,5 @@
 import {
-	MdiCardsHeartOutline,
+	MdiCardsHeart,
 	MdiCommentMultipleOutline,
 	PhShareNetwork,
 	MdiArchivePlus,
@@ -9,6 +9,7 @@ import {
 	MaterialSymbolsDeleteOutline,
 	IcSharpBookmarkRemove,
 	IcSharpTimeline,
+	MdiCardsHeartOutline,
 } from '../Icones'
 
 import { StyledPost } from '../Components'
@@ -19,8 +20,6 @@ import { generateUserInfo } from '../utils/generateUserInfo'
 import { useModal } from '../Providers/ModalProvider'
 
 import { Fragment } from 'react'
-
-import { randomImgAPI } from '../utils/api'
 
 import toast from 'react-hot-toast'
 
@@ -86,9 +85,9 @@ const Posts = props => {
 			<div className='dp-wrapper'>
 				<img
 					src={`${
-						post?.user?.profilePic === 'null'
-							? `${randomImgAPI}/400/400`
-							: post?.user?.profilePic
+						post?.user?.profilePic
+							? post?.user?.profilePic
+							: `${window.location.origin}/images/no-dp.webp`
 					}`}
 					alt='user-dp'
 					className='profile-dp'
@@ -127,9 +126,16 @@ const Posts = props => {
 					{!isPostPage && !isItDraftPage && (
 						<Fragment>
 							<span className='heart'>
-								<MdiCardsHeartOutline
-									onClick={() => handleLikes(post?._id)}
-								/>
+								{post?.likes?.includes(userInfo?._id) ? (
+									<MdiCardsHeart
+										onClick={() => handleLikes(post?._id)}
+									/>
+								) : (
+									<MdiCardsHeartOutline
+										onClick={() => handleLikes(post?._id)}
+									/>
+								)}
+
 								{post?.likes?.length}
 							</span>
 

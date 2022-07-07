@@ -101,6 +101,7 @@ const postsService = {
 
 	getAllPosts: async pgNumber => {
 		const [config] = generateUserInfo()
+		console.log(pgNumber)
 
 		try {
 			const res = await axios.get(

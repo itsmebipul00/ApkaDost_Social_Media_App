@@ -1,3 +1,4 @@
+import { StyleDrafts } from './DraftPage.styled'
 import { Fragment, useEffect, useState } from 'react'
 import { generateUserInfo } from '../../utils/generateUserInfo'
 import { API } from '../../utils/api'
@@ -5,6 +6,7 @@ import axios from 'axios'
 import { Posts } from '../../Components'
 import toast from 'react-hot-toast'
 import { useModal } from '../../Providers/ModalProvider'
+import { useNavigate } from 'react-router-dom'
 
 const DraftsPage = () => {
 	const {
@@ -60,16 +62,36 @@ const DraftsPage = () => {
 			getDrafts()
 		}
 	}
+
+	const navigate = useNavigate()
 	return (
 		<Fragment>
-			{drafts.map((post, idx) => (
-				<Posts
-					post={post}
-					isItDraftPage={true}
-					handleDraft={handleDraft}
-					deleteDraft={deleteDraft}
-				/>
-			))}
+			{drafts?.length > 0 ? (
+				drafts.map((post, idx) => (
+					<Posts
+						post={post}
+						isItDraftPage={true}
+						handleDraft={handleDraft}
+						deleteDraft={deleteDraft}
+					/>
+				))
+			) : (
+				<StyleDrafts className='no-bookmark'>
+					<img
+						src={`${window.location.origin}/images/empty-drafts.png`}
+						alt='no-bookmark'
+						className='empty-feed'
+					/>
+					<p className='empty-feed-text'>
+						Post your drafts or delete them
+					</p>
+					<button
+						className='btn-explore'
+						onClick={() => navigate('/explore')}>
+						Explore
+					</button>
+				</StyleDrafts>
+			)}
 		</Fragment>
 	)
 }

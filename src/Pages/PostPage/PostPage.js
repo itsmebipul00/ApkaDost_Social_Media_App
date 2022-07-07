@@ -97,7 +97,11 @@ const PostPage = () => {
 			<StyledReplyBox>
 				<div className='dp-wrapper'>
 					<img
-						src={userDetails?.profilePic}
+						src={
+							userDetails?.profilePic === undefined
+								? `${window.location.origin}/images/no-dp.webp`
+								: userDetails?.profilePic
+						}
 						alt={`${post?.user?.username}-dp`}
 						className='round-dp'
 					/>

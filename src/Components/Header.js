@@ -8,10 +8,7 @@ import {
 	TablerHome,
 	Fa6BrandsWpexplorer,
 	GgProfile,
-	IcOutlineMessage,
-	IcOutlineSearch,
 	IcOutlineBookmarks,
-	MaterialSymbolsArchiveOutline,
 	MaterialSymbolsDrafts,
 } from '../Icones'
 
@@ -26,7 +23,6 @@ import { Fragment, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import { StyledNavigation } from './styles/PrimaryNavigation.styled'
-import { StyledInputSearch } from './styles/InputSearch.styled'
 import { logout } from '../Features/userSlice'
 import { generateUserInfo } from '../utils/generateUserInfo.js'
 
@@ -70,7 +66,6 @@ function Header() {
 					<Fa6BrandsWpexplorer />
 					<NavLink to='/explore'>Explore</NavLink>
 				</li>
-
 				<li>
 					<GgProfile />
 					<NavLink to={`/user/${id}`}>Profile</NavLink>
@@ -84,24 +79,19 @@ function Header() {
 					<NavLink to='/drafts'>Drafts</NavLink>
 				</li>
 				<li>
-					<IcOutlineMessage />
-					<NavLink to='/messages'>Messages</NavLink>
-				</li>
-				<li>
 					<RiLogoutCircleRLine />
 					<button onClick={handleLogout}>Logout</button>
 				</li>
 			</StyledNavigation>
 			<StyledHeader>
-				<img
-					src={logo}
-					alt='logo'
-					onClick={() => setCollapseNav(prev => !prev)}
-				/>
-				<span>
-					<StyledInputSearch />
-					<IcOutlineSearch />
-				</span>
+				<div className='logo-wrapper'>
+					<img
+						src={logo}
+						alt='logo'
+						onClick={() => setCollapseNav(prev => !prev)}
+					/>
+					<p>Apka Dost</p>
+				</div>
 				<FluentDarkTheme20Filled
 					className='theme-toggler'
 					onClick={toggleThemeInHeader}

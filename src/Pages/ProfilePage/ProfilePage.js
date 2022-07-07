@@ -295,7 +295,8 @@ function ProfilePage() {
 				<img
 					src={`${
 						userInfo?.bgImage === 'null' ||
-						userInfo?.bgImage === undefined
+						userInfo?.bgImage === 'undefined' ||
+						!userInfo?.bgImage
 							? `${randomImgAPI}/800/400`
 							: userInfo?.bgImage
 					}`}
@@ -309,7 +310,7 @@ function ProfilePage() {
 								src={`${
 									userInfo?.profilePic === 'null' ||
 									userInfo?.profilePic === undefined
-										? `${randomImgAPI}/400/400`
+										? `${window.location.origin}/images/no-dp.webp`
 										: userInfo?.profilePic
 								}`}
 								alt='user-profilePic'
