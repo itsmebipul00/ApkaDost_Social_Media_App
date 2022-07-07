@@ -12,7 +12,7 @@ import {
 	DashiconsFormatGallery,
 } from '../Icones'
 
-import { StyledNewPost } from '../Components'
+import { StyledNewPost, Loader } from '../Components'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -26,6 +26,7 @@ import axios from 'axios'
 
 import { timeout } from '../utils/timeout'
 import toast from 'react-hot-toast'
+import { useState } from 'react'
 
 function NewPost() {
 	const { id } = useParams()
@@ -35,6 +36,8 @@ function NewPost() {
 	const userDetails = useSelector(state => state?.auth?.userDetails)
 
 	const [config, userInfo] = generateUserInfo('formdata')
+
+	const [imageLoading, setImageLoading] = useState(false)
 
 	const {
 		modal,
@@ -143,6 +146,8 @@ function NewPost() {
 	}
 
 	const uploadNewFile = async e => {
+		setImageLoading(true)
+
 		setPreview(URL.createObjectURL(e.target.files[0]))
 
 		const newImage = new FormData()
@@ -154,7 +159,7 @@ function NewPost() {
 		const res = await axios.post(`${cloudAPI}`, newImage)
 
 		if (res.status === 200) {
-			toast.success('Image Uploaded')
+			setImageLoading(false)
 
 			setNewPost(prev => {
 				return {
@@ -221,6 +226,7 @@ function NewPost() {
 
 	return (
 		<StyledNewPost modalShown={modal} preview={preview}>
+			{imageLoading && <Loader />}
 			{!modal && !isItDrafts && (
 				<button className='chrip-btn' onClick={openModal}>
 					<MdiFeather />

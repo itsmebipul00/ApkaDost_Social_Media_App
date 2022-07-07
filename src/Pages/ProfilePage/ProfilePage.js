@@ -60,6 +60,7 @@ function ProfilePage() {
 	const [showEditModal, setShowEditModal] = useState(false)
 	const [profilePreview, setprofPreview] = useState(null)
 	const [bgPreview, setbgPreview] = useState(null)
+	const [imageUploaded, setImageUploaded] = useState(false)
 
 	const initialState = {
 		username: userInfo?.username,
@@ -154,6 +155,7 @@ function ProfilePage() {
 	}
 
 	const uploadProfilePic = async e => {
+		setImageUploaded(true)
 		const newImage = new FormData()
 
 		newImage.append('file', e.target.files[0])
@@ -172,11 +174,15 @@ function ProfilePage() {
 				}
 			})
 
-			toast.success('Image Uploaded')
+			if (res.status === 200) {
+				setImageUploaded(false)
+			}
 		}
 	}
 
 	const uploadBackgroundImg = async e => {
+		setImageUploaded(true)
+
 		const newImage = new FormData()
 
 		newImage.append('file', e.target.files[0])
@@ -195,7 +201,9 @@ function ProfilePage() {
 				}
 			})
 
-			toast.success('Image Uploaded')
+			if (res.status === 200) {
+				setImageUploaded(false)
+			}
 		}
 	}
 
@@ -290,7 +298,9 @@ function ProfilePage() {
 
 	return (
 		<StyledProfileSection>
-			{(isUserInfoLoading || isUserPostsLoading) && <Loader />}
+			{(isUserInfoLoading || isUserPostsLoading || imageUploaded) && (
+				<Loader />
+			)}
 			<div className='profileInfo-wrapper'>
 				<img
 					src={`${
