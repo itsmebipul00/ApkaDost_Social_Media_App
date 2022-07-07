@@ -1,6 +1,5 @@
-# nextxt_frontend
-- 👤admin@example.com  password => 123456
-- Or you could register and onboard
+# Apka Dost
+
 
 🥘Features included 
 - Create a Post from many screens
