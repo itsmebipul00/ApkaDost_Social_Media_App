@@ -1,4 +1,7 @@
 # nextxt_frontend
+- 👤admin@example.com  password => 123456
+- Or you could register and onboard
+
 🥘Features included 
 - Create a Post from many screens
 - Upload Images while creating posts, while saving posts from drafts, while editing post, while editing profile
@@ -23,5 +26,10 @@
 - Custom backend: https://github.com/itsmebipul00/nextxt_backend
 - All datas perists everwhere on any action(even on refreshes)
 - Multiple users could use it datas change and persists in refreshes
+- Responsive
+
+- Made using React, Redux toolkit, react-redux and styled-components
 
 Made with 💘 
+
+More features coming soon 🚀
